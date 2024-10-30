@@ -20,5 +20,4 @@ function checkCheckstyle
 		fi
 	else
 		echo -ne "OK\n"
-	fi
-}
+	fi}

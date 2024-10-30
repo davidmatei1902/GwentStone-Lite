@@ -1,0 +1,91 @@
+.
+├── checkstyle.txt
+├── GwentStone.iml
+├── out
+│   └── production
+│       └── GwentStone
+│           ├── checker
+│           │   ├── Checker.class
+│           │   ├── CheckerConstants.class
+│           │   ├── checkstyle-8.36.2-all.jar
+│           │   ├── Checkstyle.class
+│           │   ├── checkstyle.sh
+│           │   └── poo_checks.xml
+│           ├── fileio
+│           │   ├── ActionsInput.class
+│           │   ├── CardInput.class
+│           │   ├── Coordinates.class
+│           │   ├── DecksInput.class
+│           │   ├── GameInput.class
+│           │   ├── Input.class
+│           │   └── StartGameInput.class
+│           ├── generated
+│           └── main
+│               ├── Main.class
+│               └── Test.class
+├── result
+├── src
+│   ├── checkstyle.txt
+│   ├── input
+│   │   ├── test01_game_start.json
+│   │   ├── test02_place_card.json
+│   │   ├── test03_place_card_invalid.json
+│   │   ├── test04_attack_card.json
+│   │   ├── test05_attack_card_invalid.json
+│   │   ├── test06_use_card_ability.json
+│   │   ├── test07_use_card_ability_invalid.json
+│   │   ├── test08_attack_hero.json
+│   │   ├── test09_attack_hero_invalid.json
+│   │   ├── test10_use_hero_ability_1.json
+│   │   ├── test11_use_hero_ability_2.json
+│   │   ├── test12_use_hero_ability_1_invalid.json
+│   │   ├── test13_use_hero_ability_2_invalid.json
+│   │   ├── test14_multiple_games_valid.json
+│   │   ├── test15_multiple_games_invalid.json
+│   │   └── test16_big_game.json
+│   ├── lib
+│   │   ├── jackson-annotations-2.13.3.jar
+│   │   ├── jackson-core-2.13.3.jar
+│   │   ├── jackson-databind-2.13.3.jar
+│   │   └── lombok.jar
+│   ├── README.md
+│   ├── ref
+│   │   ├── ref_test01_game_start.json
+│   │   ├── ref_test02_place_card.json
+│   │   ├── ref_test03_place_card_invalid.json
+│   │   ├── ref_test04_attack_card.json
+│   │   ├── ref_test05_attack_card_invalid.json
+│   │   ├── ref_test06_use_card_ability.json
+│   │   ├── ref_test07_use_card_ability_invalid.json
+│   │   ├── ref_test08_attack_hero.json
+│   │   ├── ref_test09_attack_hero_invalid.json
+│   │   ├── ref_test10_use_hero_ability_1.json
+│   │   ├── ref_test11_use_hero_ability_2.json
+│   │   ├── ref_test12_use_hero_ability_1_invalid.json
+│   │   ├── ref_test13_use_hero_ability_2_invalid.json
+│   │   ├── ref_test14_multiple_games_valid.json
+│   │   ├── ref_test15_multiple_games_invalid.json
+│   │   └── ref_test16_big_game.json
+│   ├── src
+│   │   ├── checker
+│   │   │   ├── CheckerConstants.java
+│   │   │   ├── Checker.java
+│   │   │   ├── checkstyle-8.36.2-all.jar
+│   │   │   ├── Checkstyle.java
+│   │   │   ├── checkstyle.sh
+│   │   │   └── poo_checks.xml
+│   │   ├── fileio
+│   │   │   ├── ActionsInput.java
+│   │   │   ├── CardInput.java
+│   │   │   ├── Coordinates.java
+│   │   │   ├── DecksInput.java
+│   │   │   ├── GameInput.java
+│   │   │   ├── Input.java
+│   │   │   └── StartGameInput.java
+│   │   └── main
+│   │       ├── Main.java
+│   │       └── Test.java
+│   └── tema.iml
+└── tree.txt
+
+17 directories, 72 files

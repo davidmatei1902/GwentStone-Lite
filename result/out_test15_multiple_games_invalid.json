@@ -1,0 +1,10 @@
+[ {
+  "playerOneNode" : {
+    "nrCardsInDeck" : 10,
+    "nrDecks" : 2
+  },
+  "playerTwoNode" : {
+    "nrCardsInDeck" : 10,
+    "nrDecks" : 2
+  }
+} ]

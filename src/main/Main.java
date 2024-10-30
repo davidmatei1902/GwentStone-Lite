@@ -5,7 +5,10 @@ import checker.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import checker.CheckerConstants;
+import fileio.DecksInput;
 import fileio.Input;
 
 import java.io.File;
@@ -44,14 +47,18 @@ public final class Main {
         }
         Files.createDirectories(path);
 
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            String filepath = CheckerConstants.OUT_PATH + file.getName();
-            File out = new File(filepath);
-            boolean isCreated = out.createNewFile();
-            if (isCreated) {
-                action(file.getName(), filepath);
+
+        ////////////////////////////////////
+        /// NU IMI INTRA AICI HELP        //
+        ////////////////////////////////////
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
+                String filepath = CheckerConstants.OUT_PATH + file.getName();
+                File out = new File(filepath);
+                boolean isCreated = out.createNewFile();
+                if (isCreated) {
+                    action(file.getName(), filepath);
+                }
             }
-        }
 
         Checker.calculateScore();
     }
@@ -68,6 +75,29 @@ public final class Main {
                 Input.class);
 
         ArrayNode output = objectMapper.createArrayNode();
+
+        //////////////////////////////////////////////////////////
+        // objectNode asta de plimbat prin toate functiile////////
+        // in asta punem chestiile citite/////////////////////////
+        //////////////////////////////////////////////////////////
+        ObjectNode objectNode = objectMapper.createObjectNode();
+
+        // put method expects primitive tipes, like string, int ... not custom ones like getPlayerOneDecks
+        // * objectNode.put("playerOneDeck", inputData.getPlayerOneDecks());
+
+
+        ObjectNode playerOneNode = createDeckNode(objectMapper, inputData.getPlayerOneDecks());
+        ObjectNode playerTwoNode = createDeckNode(objectMapper, inputData.getPlayerTwoDecks());
+
+        objectNode.set("playerOneNode",playerOneNode);
+        objectNode.set("playerTwoNode",playerTwoNode);
+
+        output.add(objectNode);
+
+        System.out.println(output.toPrettyString());
+
+        // objectNode.put("playerOneDeck",playerOneDeck.getPlayerOneDeck());
+
 
         /*
          * TODO Implement your function here
@@ -90,5 +120,17 @@ public final class Main {
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();
         objectWriter.writeValue(new File(filePath2), output);
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //       Function that creates a deck node from a DecksInput class ///////
+    //////////////////////////////////////////////////////////////////////////
+    // momentan citim membrii simplii (int, float , etc)
+    private static ObjectNode createDeckNode(ObjectMapper objectMapper, DecksInput deck)
+    {
+        ObjectNode deckNode = objectMapper.createObjectNode();
+        deckNode.put("nrCardsInDeck",deck.getNrCardsInDeck());
+        deckNode.put("nrDecks",deck.getNrDecks());
+        return deckNode;
     }
 }

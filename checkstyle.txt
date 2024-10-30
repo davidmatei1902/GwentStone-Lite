@@ -1,2 +1,12 @@
 Starting audit...
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\checker\Checker.java:92:9: 'if' is not followed by whitespace. [WhitespaceAround]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:85: Line is longer than 100 characters (found 106). [LineLength]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:92:39: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:93:39: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:129:46: Parameter objectMapper should be final. [FinalParameters]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:129:73: Parameter deck should be final. [FinalParameters]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:130:5: '{' at column 5 should be on the previous line. [LeftCurly]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:132:37: ',' is not followed by whitespace. [WhitespaceAfter]
+[ERROR] C:\Users\David\Desktop\An 2\Semestrul 1\POO\teme grele\GwentStone\.\src\main\Main.java:133:31: ',' is not followed by whitespace. [WhitespaceAfter]
 Audit done.
+Checkstyle ends with 9 errors.
