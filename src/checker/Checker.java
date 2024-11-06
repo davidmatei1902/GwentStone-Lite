@@ -89,13 +89,10 @@ public final class Checker {
         if (!Files.exists(path)) {
             Files.createDirectories(path);
         }
-        if(Files.exists(directory.toPath())) {
         List<String> listFile = Arrays.asList(Objects.requireNonNull(directory.list()));
-
         Collections.sort(listFile);
         for (String file : listFile) {
             totalScore += calculateScore(file);
-        }
         }
 
         System.out.println("-----------------------------------------------------");
