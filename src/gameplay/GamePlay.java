@@ -32,6 +32,8 @@ public class GamePlay {
             ArrayList<ActionsInput> actions = game.getActions();
             CardInput hero1 = startGameInput.getPlayerOneHero();
             CardInput hero2 = startGameInput.getPlayerTwoHero();
+            hero1.setHealth(30);
+            hero2.setHealth(30);
             int startPlayerIdx = startGameInput.getStartingPlayer();
             int p1DeckIdx = startGameInput.getPlayerOneDeckIdx();
             int p2DeckIdx = startGameInput.getPlayerTwoDeckIdx();
@@ -44,10 +46,10 @@ public class GamePlay {
                 p2DeckCopy.add(new CardInput(card));
             }
             int seed = startGameInput.getShuffleSeed();
-            Random random1 = new Random(seed);
-            Collections.shuffle(p1DeckCopy, random1);
-            Random random2 = new Random(seed);
-            Collections.shuffle(p2DeckCopy, random2);
+//            Random random1 = new Random(seed);
+//            Collections.shuffle(p1DeckCopy, random1);
+//            Random random2 = new Random(seed);
+//            Collections.shuffle(p2DeckCopy, random2);
             p1.mana = 1;
             p2.mana = 1;
             startGame(hero1, hero2, p1DeckCopy, p2DeckCopy, startGameInput, actions);
@@ -55,10 +57,10 @@ public class GamePlay {
       }
 
     }
-    public void getCardsInHand(int playerIdx, ArrayList<CardInput> deck) {
+    public void getPlayerDeck(int playerIdx, ArrayList<CardInput> deck) {
         ObjectNode objectNode = mapper.createObjectNode();
         ArrayNode arrayNode = mapper.createArrayNode();
-        objectNode.put("command", "getCardsInHand");
+        objectNode.put("command", "getPlayerDeck");
         objectNode.put("playerIdx", playerIdx);
         for(CardInput card : deck) {
             ObjectNode objectNodeCard = mapper.createObjectNode();
@@ -77,26 +79,58 @@ public class GamePlay {
         objectNode.set("output", arrayNode);
         output.add(objectNode);
     }
+
+    public void getPlayerHero(int playerIdx,CardInput hero) {
+        ObjectNode objectNode = mapper.createObjectNode(); // {}
+        objectNode.put("command", "getPlayerHero");
+        objectNode.put("playerIdx", playerIdx);
+
+        ObjectNode objectNodeCard = mapper.createObjectNode();
+        objectNodeCard.put("mana", hero.getMana());
+        objectNodeCard.put("description", hero.getDescription());
+
+        ArrayNode arrayNodeColors = mapper.createArrayNode();
+        for(String color : hero.getColors()) {
+            arrayNodeColors.add(color);
+        }
+        objectNodeCard.set("colors", arrayNodeColors);
+        objectNodeCard.put("name", hero.getName());
+        objectNodeCard.put("health", hero.getHealth());
+
+        objectNode.set("output", objectNodeCard);
+        output.add(objectNode);
+    }
     public void startGame(CardInput hero1, CardInput hero2,
                           ArrayList<CardInput> p1Deck,
                           ArrayList<CardInput> p2Deck,
                           StartGameInput startGameInput,
                           ArrayList<ActionsInput> actions) {
         for(ActionsInput action : actions) {
-
+            int playerIdx;
             switch (action.getCommand()) {
-                case "getCardsInHand":
-                    int playerIdx = action.getPlayerIdx();
+                case "getPlayerDeck":
+                    playerIdx = action.getPlayerIdx();
                     if(playerIdx == 1) {
-                        getCardsInHand(playerIdx, p1Deck);
+                        getPlayerDeck(playerIdx, p1Deck);
                     }
                     else {
-                        getCardsInHand(playerIdx, p2Deck);
+                        getPlayerDeck(playerIdx, p2Deck);
                     }
                     break;
-                case "getPlayerDeck":
+                case "":
                     break;
                 case "getCardsOnTable":
+                    break;
+                case "getPlayerHero" :
+                    playerIdx = action.getPlayerIdx();
+                    if(playerIdx == 1)
+                    {
+                        getPlayerHero(playerIdx,hero1);
+                    }
+                    else
+                    {
+                        getPlayerHero(playerIdx,hero2);
+                    }
                     break;
                 default:
                     break;
