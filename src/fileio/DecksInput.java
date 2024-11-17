@@ -32,6 +32,10 @@ public final class DecksInput {
         return nrCardsInDeck;
     }
 
+    public CardInput getCardFromDeck(int deckIndex) {
+        return decks.get(deckIndex).get(0);
+    }
+
     public void setNrCardsInDeck(final int nrCardsInDeck) {
         this.nrCardsInDeck = nrCardsInDeck;
     }

@@ -9,6 +9,7 @@ import checker.CheckerConstants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.*;
 import gameplay.GamePlay;
+import resources.MainGame;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import resources.*;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -82,11 +85,21 @@ public final class Main {
          *
          */
 
-        ArrayList<GameInput> games = inputData.getGames();
-        DecksInput p1Decks = inputData.getPlayerOneDecks();
-        DecksInput p2Decks = inputData.getPlayerTwoDecks();
+
+        MainGame mainGame = new MainGame(inputData.getPlayerOneDecks(),inputData.getPlayerTwoDecks(),inputData.getGames());
+//
+        ArrayList<Game> games = mainGame.getGames();
+        Decks p1Decks = mainGame.getPlayerOneDecks();
+        Decks p2Decks = mainGame.getPlayerTwoDecks();
         GamePlay gamePlay = new GamePlay(games, p1Decks, p2Decks, output);
         gamePlay.initial_setup();
+
+
+//        ArrayList<GameInput> games = inputData.getGames();
+//        DecksInput p1Decks = inputData.getPlayerOneDecks();
+//        DecksInput p2Decks = inputData.getPlayerTwoDecks();
+//        GamePlay gamePlay = new GamePlay(games, p1Decks, p2Decks, output);
+//        gamePlay.initial_setup();
 
 //        ObjectMapper mapper2 = new ObjectMapper();
 //        ObjectNode objectNode = mapper.createObjectNode();

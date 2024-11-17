@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.*;
+import resources.*;
+import resources.Card;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,14 +13,19 @@ import java.util.Random;
 import java.util.Objects;
 
 public class GamePlay {
-    ArrayList<GameInput> games;
-    DecksInput p1Decks;
-    DecksInput p2Decks;
+    ArrayList<Game> games;
+    Decks p1Decks;
+    Decks p2Decks;
     Player p1;
     Player p2;
     ArrayNode output;
     ObjectMapper mapper = new ObjectMapper();
-    public GamePlay(ArrayList<GameInput> games, DecksInput p1Decks, DecksInput p2Decks, ArrayNode output) {
+
+    int currentPlayerTurn;
+    int playerOneTurn;
+    int playerTwoTurn;
+
+    public GamePlay(ArrayList<Game> games, Decks p1Decks, Decks p2Decks, ArrayNode output) {
         this.games = games;
         this.p1Decks = p1Decks;
         this.p2Decks = p2Decks;
@@ -27,42 +34,62 @@ public class GamePlay {
         this.output = output;
     }
     public void  initial_setup() {
-        for(GameInput game : games) {
-            StartGameInput startGameInput= game.getStartGame();
-            ArrayList<ActionsInput> actions = game.getActions();
-            CardInput hero1 = startGameInput.getPlayerOneHero();
-            CardInput hero2 = startGameInput.getPlayerTwoHero();
+        for(Game game : games) {
+            //setting startGameInput on current game
+            StartGame startGame= game.getStartGame();
+            //System.out.println(startGameInput);
+            ArrayList<Actions> actions = game.getActions();
+            Card hero1 = startGame.getPlayerOneHero();
+            Card hero2 = startGame.getPlayerTwoHero();
             hero1.setHealth(30);
             hero2.setHealth(30);
-            int startPlayerIdx = startGameInput.getStartingPlayer();
-            int p1DeckIdx = startGameInput.getPlayerOneDeckIdx();
-            int p2DeckIdx = startGameInput.getPlayerTwoDeckIdx();
-            ArrayList<CardInput> p1DeckCopy = new ArrayList<>();
-            ArrayList<CardInput> p2DeckCopy = new ArrayList<>();
-            for(CardInput card : p1Decks.getDeck(p1DeckIdx)) {
-                p1DeckCopy.add(new CardInput(card));
+            int startPlayerIdx = startGame.getStartingPlayer();
+            int p1DeckIdx = startGame.getPlayerOneDeckIdx();
+            int p2DeckIdx = startGame.getPlayerTwoDeckIdx();
+            ArrayList<Card> p1DeckCopy = new ArrayList<>();
+            ArrayList<Card> p2DeckCopy = new ArrayList<>();
+
+            int startingPlayer = startGame.getStartingPlayer();
+
+//            CardInput firstPlayerOneCard = p1Decks.getCardFromDeck(p1DeckIdx);
+//            CardInput firstPlayerTwoCard = p2Decks.getCardFromDeck(p2DeckIdx);
+//
+//            p1DeckCopy.add(new CardInput(firstPlayerOneCard));
+//            p2DeckCopy.add(new CardInput(firstPlayerTwoCard));
+
+            for(Card card : p1Decks.getDeck(p1DeckIdx)) {
+                p1DeckCopy.add(new Card(card));
             }
-            for(CardInput card : p2Decks.getDeck(p2DeckIdx)) {
-                p2DeckCopy.add(new CardInput(card));
+
+            for(Card card : p2Decks.getDeck(p2DeckIdx)) {
+                p2DeckCopy.add(new Card(card));
             }
-            int seed = startGameInput.getShuffleSeed();
-//            Random random1 = new Random(seed);
-//            Collections.shuffle(p1DeckCopy, random1);
-//            Random random2 = new Random(seed);
-//            Collections.shuffle(p2DeckCopy, random2);
+
+
+            long seed = startGame.getShuffleSeed();
+            Random random1 = new Random(seed);
+            Collections.shuffle(p1DeckCopy, random1);
+            Random random2 = new Random(seed);
+            Collections.shuffle(p2DeckCopy, random2);
+
+
+            // TODO IMPLEMENT THE REMOVAL OF THE FIRST ELEMENT OF THE LIST
+            p1DeckCopy.remove(0);
+            p2DeckCopy.remove(0);
+
             p1.mana = 1;
             p2.mana = 1;
-            startGame(hero1, hero2, p1DeckCopy, p2DeckCopy, startGameInput, actions);
 
+            startGame(hero1, hero2, p1DeckCopy, p2DeckCopy, startGame, actions, startingPlayer);
       }
 
     }
-    public void getPlayerDeck(int playerIdx, ArrayList<CardInput> deck) {
+    public void getPlayerDeck(int playerIdx, ArrayList<Card> deck) {
         ObjectNode objectNode = mapper.createObjectNode();
         ArrayNode arrayNode = mapper.createArrayNode();
         objectNode.put("command", "getPlayerDeck");
         objectNode.put("playerIdx", playerIdx);
-        for(CardInput card : deck) {
+        for(Card card : deck) {
             ObjectNode objectNodeCard = mapper.createObjectNode();
             objectNodeCard.put("mana", card.getMana());
             objectNodeCard.put("attackDamage", card.getAttackDamage());
@@ -80,7 +107,7 @@ public class GamePlay {
         output.add(objectNode);
     }
 
-    public void getPlayerHero(int playerIdx,CardInput hero) {
+    public void getPlayerHero(int playerIdx,Card hero) {
         ObjectNode objectNode = mapper.createObjectNode(); // {}
         objectNode.put("command", "getPlayerHero");
         objectNode.put("playerIdx", playerIdx);
@@ -100,14 +127,55 @@ public class GamePlay {
         objectNode.set("output", objectNodeCard);
         output.add(objectNode);
     }
-    public void startGame(CardInput hero1, CardInput hero2,
-                          ArrayList<CardInput> p1Deck,
-                          ArrayList<CardInput> p2Deck,
-                          StartGameInput startGameInput,
-                          ArrayList<ActionsInput> actions) {
-        for(ActionsInput action : actions) {
+
+    public void getPlayerTurn(int playerIdx) {
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("command", "getPlayerTurn");
+        objectNode.put("output", playerIdx);
+        output.add(objectNode);
+    }
+    public void startGame(Card hero1, Card hero2,
+                          ArrayList<Card> p1Deck,
+                          ArrayList<Card> p2Deck,
+                          StartGame startGameInput,
+                          ArrayList<Actions> actions, int startingPlayer) {
+
+
+        if(startingPlayer == 1) {
+            // is playerOneTurn
+            this.currentPlayerTurn = startingPlayer;
+            this.playerOneTurn = 1;
+            this.playerTwoTurn = 0;
+        }
+        else {
+            // is playerTwoTurn
+            this.currentPlayerTurn = startingPlayer;
+            this.playerTwoTurn = 1;
+            this.playerOneTurn = 0;
+        }
+
+        //TODO IMPLEMENT THE "PLAYER HAND" THING
+
+
+        for(Actions action : actions) {
             int playerIdx;
             switch (action.getCommand()) {
+                case "endPlayerTurn":
+
+                    // if is playerOneTurn
+                    if(this.currentPlayerTurn == 1)
+                    {
+                        this.currentPlayerTurn = 2;
+                        this.playerOneTurn = 0;
+                        this.playerTwoTurn = 1;
+                    }
+                    else
+                    {
+                        this.currentPlayerTurn = 1;
+                        this.playerOneTurn = 1;
+                        this.playerTwoTurn = 0;
+                    }
+                    break;
                 case "getPlayerDeck":
                     playerIdx = action.getPlayerIdx();
                     if(playerIdx == 1) {
@@ -117,7 +185,8 @@ public class GamePlay {
                         getPlayerDeck(playerIdx, p2Deck);
                     }
                     break;
-                case "":
+                case "getPlayerTurn":
+                    getPlayerTurn(this.currentPlayerTurn);
                     break;
                 case "getCardsOnTable":
                     break;
@@ -136,6 +205,5 @@ public class GamePlay {
                     break;
             }
         }
-
     }
 }
