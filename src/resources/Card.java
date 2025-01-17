@@ -1,5 +1,6 @@
 package resources;
 
+import com.sun.source.tree.AnnotatedTypeTree;
 import fileio.CardInput;
 
 import java.util.ArrayList;
@@ -11,6 +12,26 @@ public class Card {
         private String description;
         private ArrayList<String> colors;
         private String name;
+
+        private boolean isFrozen = false;
+
+    public boolean getFrozenStatus() {
+        return isFrozen;
+    }
+
+    public void setFrozenStatus(boolean frozen) {
+        isFrozen = frozen;
+    }
+
+    public Card()
+    {
+        mana = 0;
+        attackDamage = 0;
+        health = 0;
+        description = "";
+        colors = new ArrayList<>();
+        name = "";
+    }
 
     public Card(Card card) {
         this.mana = card.mana;

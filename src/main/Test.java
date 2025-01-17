@@ -1,5 +1,6 @@
 package main;
 
+import checker.Checker;
 import checker.CheckerConstants;
 
 import java.io.File;
@@ -37,5 +38,6 @@ public final class Test {
                 }
             }
         }
+        Checker.calculateScore();
     }
 }

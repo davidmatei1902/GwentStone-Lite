@@ -2,7 +2,140 @@
   "command" : "getPlayerTurn",
   "output" : 2
 }, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
   "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 6
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 6
+}, {
+  "command" : "getCardsOnTable",
+  "output" : [ {
+    "mana" : 1,
+    "attackDamage" : 0,
+    "health" : 4,
+    "description" : "Standard card: Everything is sacred to him, all is but a gift from the saints.",
+    "colors" : [ "Green", "Yellow", "Blue" ],
+    "name" : "Disciple"
+  }, [ ], [ ], {
+    "mana" : 2,
+    "attackDamage" : 4,
+    "health" : 7,
+    "description" : "Premium card: No matter how many, his body will fight. Save your breath for the Mountain is strong.",
+    "colors" : [ "Red", "Purple" ],
+    "name" : "Goliath"
+  } ]
+}, {
+  "command" : "getCardsInHand",
+  "playerIdx" : 1,
+  "output" : [ ]
+}, {
+  "command" : "getCardsInHand",
+  "playerIdx" : 2,
+  "output" : [ ]
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "placeCard",
+  "handIdx" : 0,
+  "error" : "Not enough mana to place card on table."
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
   "output" : 1
 }, {
   "command" : "getPlayerTurn",
@@ -14,13 +147,8 @@
   "command" : "getPlayerTurn",
   "output" : 1
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 2
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 1
-}, {
-  "command" : "getPlayerTurn",
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
   "output" : 1
 }, {
   "command" : "getPlayerTurn",
@@ -29,48 +157,86 @@
   "command" : "getPlayerTurn",
   "output" : 1
 }, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 2
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerTurn",
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
+  "output" : 1
+}, {
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
+  "output" : 1
+}, {
   "command" : "getPlayerTurn",
   "output" : 2
 }, {
   "command" : "getPlayerTurn",
   "output" : 1
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 2
-}, {
-  "command" : "getPlayerTurn",
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
   "output" : 1
 }, {
-  "command" : "getPlayerTurn",
+  "command" : "getPlayerMana",
+  "playerIdx" : 1,
   "output" : 1
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 2
-}, {
-  "command" : "getPlayerTurn",
+  "command" : "getPlayerMana",
+  "playerIdx" : 2,
   "output" : 1
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 2
+  "command" : "getCardsOnTable",
+  "output" : [ {
+    "mana" : 1,
+    "attackDamage" : 0,
+    "health" : 4,
+    "description" : "Standard card: Everything is sacred to him, all is but a gift from the saints.",
+    "colors" : [ "Green", "Yellow", "Blue" ],
+    "name" : "Disciple"
+  }, [ ], [ ], {
+    "mana" : 2,
+    "attackDamage" : 4,
+    "health" : 7,
+    "description" : "Premium card: No matter how many, his body will fight. Save your breath for the Mountain is strong.",
+    "colors" : [ "Red", "Purple" ],
+    "name" : "Goliath"
+  } ]
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 1
+  "command" : "getCardsInHand",
+  "playerIdx" : 1,
+  "output" : [ ]
 }, {
-  "command" : "getPlayerTurn",
-  "output" : 2
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 1
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 1
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 1
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 2
-}, {
-  "command" : "getPlayerTurn",
-  "output" : 1
+  "command" : "getCardsInHand",
+  "playerIdx" : 2,
+  "output" : [ ]
 } ]

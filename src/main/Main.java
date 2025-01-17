@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.*;
 import gameplay.GamePlay;
 import resources.MainGame;
@@ -86,13 +85,13 @@ public final class Main {
          */
 
 
-        MainGame mainGame = new MainGame(inputData.getPlayerOneDecks(),inputData.getPlayerTwoDecks(),inputData.getGames());
-//
+        MainGame mainGame = new MainGame(inputData.getPlayerOneDecks(),
+                inputData.getPlayerTwoDecks(), inputData.getGames());
         ArrayList<Game> games = mainGame.getGames();
         Decks p1Decks = mainGame.getPlayerOneDecks();
         Decks p2Decks = mainGame.getPlayerTwoDecks();
         GamePlay gamePlay = new GamePlay(games, p1Decks, p2Decks, output);
-        gamePlay.initial_setup();
+        gamePlay.initialSetup();
 
 
 //        ArrayList<GameInput> games = inputData.getGames();
