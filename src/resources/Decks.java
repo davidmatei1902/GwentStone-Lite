@@ -23,7 +23,8 @@ public class Decks {
             ArrayList<Card> listOfCards = new ArrayList<>();
             this.decks.add(listOfCards);
             for(CardInput card: decks.get(i)) {
-                this.decks.get(i).add(new Card(card));
+//                this.decks.get(i).add(new Card(card));
+                this.decks.get(i).add(Card.createCard(card));
             }
         }
     }

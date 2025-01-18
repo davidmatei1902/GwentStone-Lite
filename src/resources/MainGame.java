@@ -11,9 +11,9 @@ public class MainGame {
     private ArrayList<Game> games;
 
 
-    public MainGame(DecksInput playerOneDecks, DecksInput playerTwoDecks,ArrayList<GameInput> games) {
-        this.playerOneDecks = new Decks(playerOneDecks.getNrCardsInDeck(),playerOneDecks.getNrDecks(),playerOneDecks.getDecks());
-        this.playerTwoDecks = new Decks(playerTwoDecks.getNrCardsInDeck(),playerTwoDecks.getNrDecks(),playerTwoDecks.getDecks());
+    public MainGame(DecksInput playerOneDecks, DecksInput playerTwoDecks, ArrayList<GameInput> games) {
+        this.playerOneDecks = new Decks(playerOneDecks.getNrCardsInDeck(), playerOneDecks.getNrDecks(), playerOneDecks.getDecks());
+        this.playerTwoDecks = new Decks(playerTwoDecks.getNrCardsInDeck(), playerTwoDecks.getNrDecks(), playerTwoDecks.getDecks());
 
         this.games = new ArrayList<>(games.size());
         for(GameInput g : games) {

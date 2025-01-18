@@ -17,9 +17,11 @@ public class GamePlay {
     private Player playerOne;
     private Player playerTwo;
     private ArrayNode output;
-    private ObjectMapper mapper = new ObjectMapper();
     private Board board = new Board();
     private Round round = new Round();
+
+    private ObjectMapper mapper = new ObjectMapper();
+
 
     public GamePlay(final ArrayList<Game> games, final Decks p1Decks,
                     final Decks p2Decks, final ArrayNode output) {
@@ -65,11 +67,14 @@ public class GamePlay {
 //            p2DeckCopy.add(new CardInput(firstPlayerTwoCard));
 
             for (Card card : p1Decks.getDeck(p1DeckIdx)) {
-                p1DeckCopy.add(new Card(card));
+//                p1DeckCopy.add(new Card(card));
+                p1DeckCopy.add(Card.createCard(card));
             }
 
             for (Card card : p2Decks.getDeck(p2DeckIdx)) {
-                p2DeckCopy.add(new Card(card));
+//                p2DeckCopy.add(new Card(card));
+                p2DeckCopy.add(Card.createCard(card));
+
             }
 
 
@@ -80,10 +85,11 @@ public class GamePlay {
             Collections.shuffle(p2DeckCopy, random2);
 
 
+            // todo *****THINGS*****
+//            Card firstPlayerOneCard = p1DeckCopy.removeFirst();
+//            Card firstPlayerTwoCard = p2DeckCopy.removeFirst();
+            // todo *****THINGS*****
 
-            // TODO removing the first card from deck pass the first test... why?
-            Card firstPlayerOneCard = p1DeckCopy.removeFirst();
-            Card firstPlayerTwoCard = p2DeckCopy.removeFirst();
 
 
             // init every player's hands
@@ -91,8 +97,12 @@ public class GamePlay {
             Hand playerTwoHand = new Hand();
             playerOne.setPlayerHand(playerOneHand);
             playerTwo.setPlayerHand(playerTwoHand);
-            playerOne.getPlayerHand().addCard(firstPlayerOneCard);
-            playerTwo.getPlayerHand().addCard(firstPlayerTwoCard);
+
+            // todo *****THINGS*****
+//            playerOne.getPlayerHand().addCard(firstPlayerOneCard);
+//            playerTwo.getPlayerHand().addCard(firstPlayerTwoCard);
+            // todo *****THINGS*****
+
 
 
             // debug
@@ -102,13 +112,6 @@ public class GamePlay {
 
             playerOne.setMana(1);
             playerTwo.setMana(1);
-
-            // TODO IMPLEMENT THE ROUND SYSTEM, EACH WITH 2 SUB-ROUNDS
-
-
-
-
-
 
             startGame(hero1, hero2, p1DeckCopy, p2DeckCopy, startGame, actions, startingPlayer);
       }
@@ -188,6 +191,10 @@ public class GamePlay {
         output.add(objectNode);
     }
 
+    /**
+     * Function that output all the cards on the table (from top left to bottom right)
+     * @param board
+     */
     public void getCardsOnTable(final Board board) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("command", "getCardsOnTable");
@@ -195,31 +202,32 @@ public class GamePlay {
         ArrayNode allCardsNode = mapper.createArrayNode();
         for(ArrayList<Card> row : board.getCards()) {
 
-            /*
-                If row is empty, append to list as empty list
-             */
+
+            ArrayNode eachRowNode = mapper.createArrayNode();
+
             if(row == null  || row.isEmpty())
             {
-                ArrayNode eachRowNode = mapper.createArrayNode();
                 allCardsNode.add(eachRowNode);
             }
+            else {
+                for (Card card : row) {
+                    if (card != null) {
+                        ObjectNode objectNodeCard = mapper.createObjectNode();
+                        objectNodeCard.put("mana", card.getMana());
+                        objectNodeCard.put("attackDamage", card.getAttackDamage());
+                        objectNodeCard.put("health", card.getHealth());
+                        objectNodeCard.put("description", card.getDescription());
+                        ArrayNode arrayNodeColors = mapper.createArrayNode();
+                        for (String color : card.getColors()) {
+                            arrayNodeColors.add(color);
+                        }
+                        objectNodeCard.set("colors", arrayNodeColors);
+                        objectNodeCard.put("name", card.getName());
 
-            for (Card card : row) {
-                if (card != null) {
-                    ObjectNode objectNodeCard = mapper.createObjectNode();
-                    objectNodeCard.put("mana", card.getMana());
-                    objectNodeCard.put("attackDamage", card.getAttackDamage());
-                    objectNodeCard.put("health", card.getHealth());
-                    objectNodeCard.put("description", card.getDescription());
-                    ArrayNode arrayNodeColors = mapper.createArrayNode();
-                    for (String color : card.getColors()) {
-                        arrayNodeColors.add(color);
+                        eachRowNode.add(objectNodeCard);
                     }
-                    objectNodeCard.set("colors", arrayNodeColors);
-                    objectNodeCard.put("name", card.getName());
-
-                    allCardsNode.add(objectNodeCard);
                 }
+                allCardsNode.add(eachRowNode);
             }
         }
 
@@ -227,17 +235,44 @@ public class GamePlay {
         output.add(objectNode);
     }
 
+    public void handlePlacingCard(final Player player, final Hand playerHand, final Card cardToBePlaced, final int handIdx, final ObjectNode objectNode) {
+        int maxColums = board.getMaxColums();
+        cardToBePlaced.addToBoard(board, player.getPlayerNumber());
+        // if playerOne is placing card
+//        if (player.getPlayerNumber() == 1) {
+//            /// Last row of the board is full (back row of first player)
+//            if (board.getCards().get(3).size() > maxColums) {
+//                objectNode.put("command", "placeCard");
+//                objectNode.put("handIdx", handIdx);
+//                objectNode.put("error", "Cannot place card on table since row is full.");
+//                return;
+//            } else {
+//                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
+//            }
+//        } else {
+//            /// First row of the board is full (back row of second player)
+//            if (board.getCards().get(0).size() > maxColums) {
+//                objectNode.put("command", "placeCard");
+//                objectNode.put("handIdx", handIdx);
+//                objectNode.put("error", "Cannot place card on table since column is full.");
+//                return;
+//            } else {
+//                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
+//            }
+//        }
+    }
+
 
     /**
      * Function place card on board
      * @param player
-     * @param handIdx
+     * @param handIdx card index from hand which want to be placed
+     * @param playerHand player hand
      */
     // already known which player I am
-    public void placeCard(final Player player, final int handIdx) {
+    public void placeCard(final Player player, final Hand playerHand, final int handIdx) {
         ObjectNode objectNode = mapper.createObjectNode();
 
-        Hand playerHand = player.getPlayerHand();
         Card cardToBePlaced = playerHand.getCard(handIdx);
 
 
@@ -247,6 +282,7 @@ public class GamePlay {
         }
         //System.out.println(cardToBePlaced);
 
+        // handle not enough mana
         if (cardToBePlaced.getMana() > player.getMana()) {
             objectNode.put("command", "placeCard");
             objectNode.put("handIdx", handIdx);
@@ -254,31 +290,8 @@ public class GamePlay {
             output.add(objectNode);
             return;
         }
-        int maxColums = board.getMaxColums();
 
-
-        // if playerOne is placing card
-        if (player.getPlayerNumber() == 1) {
-            /// Last row of the board is full (back row of first player)
-            if (board.getCards().get(3).size() > maxColums) {
-                objectNode.put("command", "placeCard");
-                objectNode.put("handIdx", handIdx);
-                objectNode.put("error", "Cannot place card on table since row is full.");
-                return;
-            } else {
-                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
-            }
-        } else {
-            /// First row of the board is full (back row of second player)
-            if (board.getCards().get(0).size() > maxColums) {
-                objectNode.put("command", "placeCard");
-                objectNode.put("handIdx", handIdx);
-                objectNode.put("error", "Cannot place card on table since column is full.");
-                return;
-            } else {
-                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
-            }
-        }
+        handlePlacingCard(player,playerHand,cardToBePlaced,handIdx,objectNode);
     }
 
     /**
@@ -293,26 +306,64 @@ public class GamePlay {
         Hand playerHand = player.getPlayerHand();
         ArrayNode arrayNode = mapper.createArrayNode();
         for (Card card : playerHand.getCards()) {
-            ObjectNode objectNodeCard = mapper.createObjectNode();
-            objectNode.put("mana", card.getMana());
-            objectNode.put("attackDamage", card.getAttackDamage());
-            objectNode.put("health", card.getHealth());
-            objectNode.put("description", card.getDescription());
+            if(card != null) {
+                ObjectNode objectNodeCard = mapper.createObjectNode();
+                objectNodeCard.put("mana", card.getMana());
+                objectNodeCard.put("attackDamage", card.getAttackDamage());
+                objectNodeCard.put("health", card.getHealth());
+                objectNodeCard.put("description", card.getDescription());
 
-            ArrayNode arrayNodeColors = mapper.createArrayNode();
-            for (String color : card.getColors()) {
-                arrayNode.add(color);
+                ArrayNode arrayNodeColors = mapper.createArrayNode();
+                for (String color : card.getColors()) {
+                    arrayNodeColors.add(color);
+                }
+                objectNodeCard.set("colors", arrayNodeColors);
+                objectNodeCard.put("name", card.getName());
+                arrayNode.add(objectNodeCard);
             }
-            objectNodeCard.set("colors", arrayNodeColors);
-            arrayNode.add(objectNodeCard);
         }
         objectNode.set("output", arrayNode);
         output.add(objectNode);
     }
 
+    private void handleEndTurn(final ArrayList<Card> p1Deck, final ArrayList<Card> p2Deck, final Hand playerOneHand, final Hand playerTwoHand) {
+        if (round.getCurrentPlayerTurn() == 1) {
+            // End player one's turn
+            playerOne.unFreezeCards(playerOne.getPlayerHand());
+            round.setPlayerOneHasEndedHisTurn(1);
+            round.setPlayerOneTurn(0);
+            round.setPlayerTwoTurn(1);
+            round.setCurrentPlayerTurn(2);
+        } else {
+            // End player two's turn
+            playerTwo.unFreezeCards(playerTwo.getPlayerHand());
+            round.setPlayerTwoHasEndedHisTurn(1);
+            round.setPlayerOneTurn(1);
+            round.setPlayerTwoTurn(0);
+            round.setCurrentPlayerTurn(1);
+        }
+
+        // If both players have ended their turn, start a new round
+        if (round.getPlayerOneHasEndedHisTurn() == 1 && round.getPlayerTwoHasEndedHisTurn() == 1) {
+            startNewRound(p1Deck,p2Deck,playerOneHand,playerTwoHand);
+        }
+    }
+
+    private void startNewRound(final ArrayList<Card> p1Deck, final ArrayList<Card> p2Deck, final Hand playerOneHand, final Hand playerTwoHand) {
+        round.setPlayerOneHasEndedHisTurn(0);
+        round.setPlayerTwoHasEndedHisTurn(0);
+
+        round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
+
+        if (!p1Deck.isEmpty()) playerOneHand.addCard(p1Deck.remove(0));
+        if (!p2Deck.isEmpty()) playerTwoHand.addCard(p2Deck.remove(0));
+
+        playerOne.incrementManaBy(round.getCurrentRoundNumber());
+        playerTwo.incrementManaBy(round.getCurrentRoundNumber());
+    }
+
     /// TODO BA VEZI AICI
     /// TODO IN REF PUNE CARTILE MAI INTAI IN MANA, LE VERIFICA SI CRED CA APOI LE PUNE PE MASA ????////////
-    /// TODO IMPLEMENTEAZA RUNDELE CA SISTEM
     //////////////////////////////////////////////
     //////////////////////////////////////////////
 
@@ -332,78 +383,64 @@ public class GamePlay {
                           final StartGame startGameInput,
                           final ArrayList<Actions> actions, final int startingPlayer) {
 
+        Hand playerOneHand = playerOne.getPlayerHand();
+        Hand playerTwoHand = playerTwo.getPlayerHand();
+        round.setCurrentPlayerTurn(startingPlayer);
 
-        if (startingPlayer == 1) {
-            // is playerOneTurn
-//            this.currentPlayerTurn = startingPlayer;
-//            this.playerOneTurn = 1;
-//            this.playerTwoTurn = 0;
-
-            round.setPlayerOneTurn(1);
-            round.setPlayerTwoTurn(0);
-            round.setCurrentPlayerTurn(1);
-        } else {
-            // is playerTwoTurn
-//            this.currentPlayerTurn = startingPlayer;
-//            this.playerOneTurn = 0;
-//            this.playerTwoTurn = 1;
-
-            round.setPlayerOneTurn(0);
-            round.setPlayerTwoTurn(1);
-            round.setCurrentPlayerTurn(2);
+        if (round.getCurrentRoundNumber() == 0) {
+            if (!p1Deck.isEmpty()) playerOneHand.addCard(p1Deck.remove(0));
+            if (!p2Deck.isEmpty()) playerTwoHand.addCard(p2Deck.remove(0));
+            round.setCurrentRoundNumber(1);
         }
 
-        //TODO IMPLEMENT THE "PLAYER HAND" THING
-
-
         for (Actions action : actions) {
-
             int playerIdx;
             switch (action.getCommand()) {
                 case "placeCard":
                     int handIdx = action.getHandIdx();
                     if (round.getCurrentPlayerTurn() == 1) {
-                        placeCard(playerOne, handIdx);
+                        placeCard(playerOne, playerOneHand, handIdx);
                     } else {
-                        placeCard(playerTwo, handIdx);
+                        placeCard(playerTwo, playerTwoHand, handIdx);
                     }
                     break;
                 case "endPlayerTurn":
-
-                    // if current player turn is playerOne
-                    if (round.getCurrentPlayerTurn() == 1) {
-                        playerOne.unFreezeCards(playerOne.getPlayerHand());
-
-                        // set player one turn done
-                        round.setPlayerOneHasEndedHisTurn(1);
-
-                        round.setPlayerOneTurn(0);
-                        round.setPlayerTwoTurn(1);
-                        round.setCurrentPlayerTurn(2);
-                    } else {
-                        playerTwo.unFreezeCards(playerTwo.getPlayerHand());
-
-                        round.setPlayerTwoHasEndedHisTurn(1);
-
-                        round.setPlayerOneTurn(1);
-                        round.setPlayerTwoTurn(0);
-                        round.setCurrentPlayerTurn(1);
-                    }
-
-                    if (round.getPlayerOneHasEndedHisTurn() == 1 && round.getPlayerTwoHasEndedHisTurn() == 1) {
-                        // reset turn flags for the next round
-                        round.setPlayerOneHasEndedHisTurn(0);
-                        round.setPlayerTwoHasEndedHisTurn(0);
-
-                        // increment the round number
-                        round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
-
-                        // increase current mana for each player
-                        playerOne.incrementManaBy(round.getCurrentRoundNumber());
-                        playerTwo.incrementManaBy(round.getCurrentRoundNumber());
-                    }
+                    handleEndTurn(p1Deck,p2Deck,playerOneHand,playerTwoHand);
 
 
+//                    // if current player turn is playerOne
+//                    if (round.getCurrentPlayerTurn() == 1) {
+//                        playerOne.unFreezeCards(playerOne.getPlayerHand());
+//
+//                        // set player one turn done
+//                        round.setPlayerOneHasEndedHisTurn(1);
+//
+//                        round.setPlayerOneTurn(0);
+//                        round.setPlayerTwoTurn(1);
+//                        round.setCurrentPlayerTurn(2);
+//                    } else {
+//                        playerTwo.unFreezeCards(playerTwo.getPlayerHand());
+//
+//                        round.setPlayerTwoHasEndedHisTurn(1);
+//
+//                        round.setPlayerOneTurn(1);
+//                        round.setPlayerTwoTurn(0);
+//                        round.setCurrentPlayerTurn(1);
+//                    }
+//
+//                    // BOTH PLAYERS HAS ENDED THEIR TURN => NEXT ROUND
+//                    if (round.getPlayerOneHasEndedHisTurn() == 1 && round.getPlayerTwoHasEndedHisTurn() == 1) {
+//                        // reset turn flags for the next round
+//                        round.setPlayerOneHasEndedHisTurn(0);
+//                        round.setPlayerTwoHasEndedHisTurn(0);
+//
+//                        // increment the round number
+//                        round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
+//
+//                        // increase current mana for each player
+//                        playerOne.incrementManaBy(round.getCurrentRoundNumber());
+//                        playerTwo.incrementManaBy(round.getCurrentRoundNumber());
+//                    }
                     break;
                 case "getPlayerDeck":
                     playerIdx = action.getPlayerIdx();
@@ -438,13 +475,15 @@ public class GamePlay {
                 case "getPlayerMana" :
                     playerIdx = action.getPlayerIdx();
                     if (playerIdx == 1) {
-                        getPlayerMana(playerIdx,playerOne);
+                        getPlayerMana(playerIdx, playerOne);
                     } else {
                         getPlayerMana(playerIdx, playerTwo);
                     }
                 default:
                     break;
             }
+
+
         }
     }
 }

@@ -11,21 +11,35 @@
   "output" : 6
 }, {
   "command" : "getCardsOnTable",
-  "output" : [ {
+  "output" : [ [ {
+    "mana" : 2,
+    "attackDamage" : 3,
+    "health" : 1,
+    "description" : "Standard card: A drink can always be served, with the blood of his enemies.",
+    "colors" : [ "Purple", "Yellow" ],
+    "name" : "Berserker"
+  } ], [ {
     "mana" : 4,
     "attackDamage" : 2,
     "health" : 7,
     "description" : "Standard card: A warrior who is never afraid of battle, no matter the costs",
     "colors" : [ "Brown", "Black", "Grey" ],
     "name" : "Goliath"
-  }, [ ], [ ], {
-    "mana" : 4,
-    "attackDamage" : 6,
-    "health" : 3,
+  } ], [ {
+    "mana" : 3,
+    "attackDamage" : 5,
+    "health" : 4,
     "description" : "Standard card: Death incarnate. No better time to die than now.",
-    "colors" : [ "Orange", "Red", "Black" ],
+    "colors" : [ "Black", "Yellow" ],
     "name" : "The Ripper"
-  } ]
+  } ], [ {
+    "mana" : 3,
+    "attackDamage" : 0,
+    "health" : 4,
+    "description" : "Premium card: The will of Gods has been spoken, obey and you shall be saved...or not.",
+    "colors" : [ "Green", "Yellow", "Blue" ],
+    "name" : "Disciple"
+  } ] ]
 }, {
   "command" : "getCardsInHand",
   "playerIdx" : 1,
@@ -33,5 +47,12 @@
 }, {
   "command" : "getCardsInHand",
   "playerIdx" : 2,
-  "output" : [ ]
+  "output" : [ {
+    "mana" : 2,
+    "attackDamage" : 2,
+    "health" : 6,
+    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
+    "colors" : [ "Brown", "Blue" ],
+    "name" : "Warden"
+  } ]
 } ]

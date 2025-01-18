@@ -9,11 +9,15 @@ public class Round {
     private int playerTwoTurn = 0;
     private int playerTwoHasEndedHisTurn = 0;
 
-    private int currentRoundNumber = 1;
+    private int currentRoundNumber = 0;
 
 
     public void increaseRoundNumber() {
         currentRoundNumber++;
+    }
+
+    public boolean isStartOfRound() {
+        return playerOneHasEndedHisTurn == 0 && playerTwoHasEndedHisTurn == 0;
     }
 
     public int getCurrentPlayerTurn() {

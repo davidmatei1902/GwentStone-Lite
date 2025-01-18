@@ -2,6 +2,14 @@ package resources;
 
 import com.sun.source.tree.AnnotatedTypeTree;
 import fileio.CardInput;
+import minions.normalMinions.Berserker;
+import minions.normalMinions.Goliath;
+import minions.normalMinions.Sentinel;
+import minions.normalMinions.Warden;
+import minions.speacialMinions.Disciple;
+import minions.speacialMinions.Miraj;
+import minions.speacialMinions.TheCursedOne;
+import minions.speacialMinions.TheRipper;
 
 import java.util.ArrayList;
 
@@ -42,6 +50,57 @@ public class Card {
         this.name = card.name;
     }
 
+    public static Card createCard(CardInput cardInput) {
+        switch (cardInput.getName()) {
+            case "Warden":
+                return new Warden(cardInput);
+            case "Goliath":
+                return new Goliath(cardInput);
+            case "Sentinel":
+                return new Sentinel(cardInput);
+            case "Berserker":
+                return new Berserker(cardInput);
+
+            case "Disciple":
+                return new Disciple(cardInput);
+            case "Miraj":
+                return new Miraj(cardInput);
+            case "The Cursed One":
+                return new TheCursedOne(cardInput);
+            case "The Ripper":
+                return new TheRipper(cardInput);
+            default:
+                System.out.println("Unknown card type: " + cardInput.getName());
+                return null;  // Return null or a default card type
+        }
+    }
+
+    public static Card createCard(Card card) {
+        switch (card.getName()) {
+            case "Warden":
+                return new Warden(card);
+            case "Goliath":
+                return new Goliath(card);
+            case "Sentinel":
+                return new Sentinel(card);
+            case "Berserker":
+                return new Berserker(card);
+
+            case "Disciple":
+                return new Disciple(card);
+            case "Miraj":
+                return new Miraj(card);
+            case "The Cursed One":
+                return new TheCursedOne(card);
+            case "The Ripper":
+                return new TheRipper(card);
+
+            default:
+                System.out.println("Unknown card type: " + card.getName());
+                return null;  // Return null or a default card type
+        }
+    }
+
     public Card(CardInput cardInput) {
         this.mana = cardInput.getMana();
         this.attackDamage = cardInput.getAttackDamage();
@@ -51,6 +110,8 @@ public class Card {
         this.name = cardInput.getName();
     }
 
+    public void addToBoard(Board board, int playerNumber) {
+    }
     public void setMana(int mana) {
         this.mana = mana;
     }
