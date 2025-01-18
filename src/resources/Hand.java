@@ -16,7 +16,7 @@ public class Hand {
     public Card getCard(int index) {
         if(index >= 0 && index < cards.size()) {
             Card card = cards.remove(index);
-            System.out.println(card);
+            //System.out.println(card);
             return card;
         }
         else

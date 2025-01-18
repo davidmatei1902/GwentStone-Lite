@@ -16,7 +16,7 @@ public class Player {
     private Hand playerHand;
 
     public Player() {
-        mana = 0;
+        mana = 1;
         gamesPlayed = 0;
         gamesWon = 0;
         gamesLost = 0;
@@ -24,9 +24,12 @@ public class Player {
     }
 
     public void incrementManaBy(int amount) {
-        // increase amount of mana if only the following amount is not bigger that maxMana
-        if(mana + amount < maxMana) {
-            mana += amount;
+        mana += amount;
+    }
+
+    public void decreaseManaBy(int amount) {
+        if(mana - amount >= 0) {
+            mana -= amount;
         }
     }
 

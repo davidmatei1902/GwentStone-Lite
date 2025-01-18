@@ -106,9 +106,9 @@ public class GamePlay {
 
 
             // debug
-            playerOne.getPlayerHand().printHand();
-            playerTwo.getPlayerHand().printHand();
-            System.out.println("\n");
+//            playerOne.getPlayerHand().printHand();
+//            playerTwo.getPlayerHand().printHand();
+//            System.out.println("\n");
 
             playerOne.setMana(1);
             playerTwo.setMana(1);
@@ -237,7 +237,8 @@ public class GamePlay {
 
     public void handlePlacingCard(final Player player, final Hand playerHand, final Card cardToBePlaced, final int handIdx, final ObjectNode objectNode) {
         int maxColums = board.getMaxColums();
-        cardToBePlaced.addToBoard(board, player.getPlayerNumber());
+        cardToBePlaced.addToBoard(board, player);
+        
         // if playerOne is placing card
 //        if (player.getPlayerNumber() == 1) {
 //            /// Last row of the board is full (back row of first player)
@@ -328,14 +329,14 @@ public class GamePlay {
 
     private void handleEndTurn(final ArrayList<Card> p1Deck, final ArrayList<Card> p2Deck, final Hand playerOneHand, final Hand playerTwoHand) {
         if (round.getCurrentPlayerTurn() == 1) {
-            // End player one's turn
+            // end player one turn
             playerOne.unFreezeCards(playerOne.getPlayerHand());
             round.setPlayerOneHasEndedHisTurn(1);
             round.setPlayerOneTurn(0);
             round.setPlayerTwoTurn(1);
             round.setCurrentPlayerTurn(2);
         } else {
-            // End player two's turn
+            // end player two turn
             playerTwo.unFreezeCards(playerTwo.getPlayerHand());
             round.setPlayerTwoHasEndedHisTurn(1);
             round.setPlayerOneTurn(1);
@@ -343,9 +344,9 @@ public class GamePlay {
             round.setCurrentPlayerTurn(1);
         }
 
-        // If both players have ended their turn, start a new round
+        // if both players have ended their turn, start a new round
         if (round.getPlayerOneHasEndedHisTurn() == 1 && round.getPlayerTwoHasEndedHisTurn() == 1) {
-            startNewRound(p1Deck,p2Deck,playerOneHand,playerTwoHand);
+            startNewRound(p1Deck, p2Deck, playerOneHand, playerTwoHand);
         }
     }
 
@@ -358,14 +359,11 @@ public class GamePlay {
         if (!p1Deck.isEmpty()) playerOneHand.addCard(p1Deck.remove(0));
         if (!p2Deck.isEmpty()) playerTwoHand.addCard(p2Deck.remove(0));
 
-        playerOne.incrementManaBy(round.getCurrentRoundNumber());
-        playerTwo.incrementManaBy(round.getCurrentRoundNumber());
-    }
+        int manaToAdd = Math.min(round.getCurrentRoundNumber(), 10);
 
-    /// TODO BA VEZI AICI
-    /// TODO IN REF PUNE CARTILE MAI INTAI IN MANA, LE VERIFICA SI CRED CA APOI LE PUNE PE MASA ????////////
-    //////////////////////////////////////////////
-    //////////////////////////////////////////////
+        playerOne.incrementManaBy(manaToAdd);
+        playerTwo.incrementManaBy(manaToAdd);
+    }
 
     /**
      * Function that starts the game
@@ -396,6 +394,8 @@ public class GamePlay {
         for (Actions action : actions) {
             int playerIdx;
             switch (action.getCommand()) {
+
+                // TODO HANDLE WRONG PLACING CARD ACCORDINGLY
                 case "placeCard":
                     int handIdx = action.getHandIdx();
                     if (round.getCurrentPlayerTurn() == 1) {
@@ -406,41 +406,6 @@ public class GamePlay {
                     break;
                 case "endPlayerTurn":
                     handleEndTurn(p1Deck,p2Deck,playerOneHand,playerTwoHand);
-
-
-//                    // if current player turn is playerOne
-//                    if (round.getCurrentPlayerTurn() == 1) {
-//                        playerOne.unFreezeCards(playerOne.getPlayerHand());
-//
-//                        // set player one turn done
-//                        round.setPlayerOneHasEndedHisTurn(1);
-//
-//                        round.setPlayerOneTurn(0);
-//                        round.setPlayerTwoTurn(1);
-//                        round.setCurrentPlayerTurn(2);
-//                    } else {
-//                        playerTwo.unFreezeCards(playerTwo.getPlayerHand());
-//
-//                        round.setPlayerTwoHasEndedHisTurn(1);
-//
-//                        round.setPlayerOneTurn(1);
-//                        round.setPlayerTwoTurn(0);
-//                        round.setCurrentPlayerTurn(1);
-//                    }
-//
-//                    // BOTH PLAYERS HAS ENDED THEIR TURN => NEXT ROUND
-//                    if (round.getPlayerOneHasEndedHisTurn() == 1 && round.getPlayerTwoHasEndedHisTurn() == 1) {
-//                        // reset turn flags for the next round
-//                        round.setPlayerOneHasEndedHisTurn(0);
-//                        round.setPlayerTwoHasEndedHisTurn(0);
-//
-//                        // increment the round number
-//                        round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
-//
-//                        // increase current mana for each player
-//                        playerOne.incrementManaBy(round.getCurrentRoundNumber());
-//                        playerTwo.incrementManaBy(round.getCurrentRoundNumber());
-//                    }
                     break;
                 case "getPlayerDeck":
                     playerIdx = action.getPlayerIdx();

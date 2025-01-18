@@ -11,6 +11,8 @@ import minions.speacialMinions.Miraj;
 import minions.speacialMinions.TheCursedOne;
 import minions.speacialMinions.TheRipper;
 
+import gameplay.Player;
+
 import java.util.ArrayList;
 
 public class Card {
@@ -110,7 +112,7 @@ public class Card {
         this.name = cardInput.getName();
     }
 
-    public void addToBoard(Board board, int playerNumber) {
+    public void addToBoard(Board board, Player player) {
     }
     public void setMana(int mana) {
         this.mana = mana;
