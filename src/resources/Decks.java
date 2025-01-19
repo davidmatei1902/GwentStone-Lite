@@ -2,7 +2,6 @@ package resources;
 
 
 import fileio.CardInput;
-import fileio.DecksInput;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public class Decks {
     private int nrDecks;
     private ArrayList<ArrayList<Card>> decks;
 
-    public Decks(int nrCardsInDeck, int nrDecks, ArrayList<ArrayList<CardInput>> decks) {
+    public Decks(final int nrCardsInDeck, final int nrDecks, final ArrayList<ArrayList<CardInput>> decks) {
 
         this.nrCardsInDeck = nrCardsInDeck;
         this.nrDecks = nrDecks;
@@ -19,10 +18,10 @@ public class Decks {
         int numberOfDecks = decks.size();
         this.decks = new ArrayList<ArrayList<Card>>(numberOfDecks);
 
-        for(int i = 0; i < numberOfDecks; i++) {
+        for (int i = 0; i < numberOfDecks; i++) {
             ArrayList<Card> listOfCards = new ArrayList<>();
             this.decks.add(listOfCards);
-            for(CardInput card: decks.get(i)) {
+            for (CardInput card: decks.get(i)) {
 //                this.decks.get(i).add(new Card(card));
                 this.decks.get(i).add(Card.createCard(card));
             }
@@ -30,35 +29,30 @@ public class Decks {
     }
 
 
-    public Decks(Decks dCopy) {
+    public Decks(final Decks dCopy) {
         nrCardsInDeck = dCopy.nrCardsInDeck;
         nrDecks = dCopy.nrDecks;
         ArrayList<ArrayList<Card>> originalDecks = dCopy.getDecks();
         decks = new ArrayList<ArrayList<Card>>();
         // iterate through decks
-        for(int i = 0; i < dCopy.getNrDecks(); i++) {
+        for (int i = 0; i < dCopy.getNrDecks(); i++) {
             // get the i-th deck and create new deck object
             ArrayList<Card> originalDeck = originalDecks.get(i);
             ArrayList<Card> deck = new ArrayList<>();
             decks.add(deck);
             // iterate through cards in current deck
-            for(int j = 0; j < dCopy.nrCardsInDeck; j++)
+            for (int j = 0; j < dCopy.nrCardsInDeck; j++) {
                 // add current card
                 deck.add(new Card(originalDeck.get(j)));
+            }
         }
-    }
-
-
-
-    public Card getCardFromDeck(int deckIndex) {
-        return decks.get(deckIndex).get(0);
     }
 
     public int getNrCardsInDeck() {
         return nrCardsInDeck;
     }
 
-    public void setNrCardsInDeck(int nrCardsInDeck) {
+    public void setNrCardsInDeck(final int nrCardsInDeck) {
         this.nrCardsInDeck = nrCardsInDeck;
     }
 
@@ -66,7 +60,7 @@ public class Decks {
         return nrDecks;
     }
 
-    public void setNrDecks(int nrDecks) {
+    public void setNrDecks(final int nrDecks) {
         this.nrDecks = nrDecks;
     }
 
@@ -74,11 +68,16 @@ public class Decks {
         return decks;
     }
 
-    public ArrayList<Card> getDeck(int idx) {
+    /**
+     * Function that returns a deck by its id
+     * @param idx
+     * @return the deck corresponding the idx
+     */
+    public ArrayList<Card> getDeck(final int idx) {
         return decks.get(idx);
     }
 
-    public void setDecks(ArrayList<ArrayList<Card>> decks) {
+    public void setDecks(final ArrayList<ArrayList<Card>> decks) {
         this.decks = decks;
     }
 
@@ -91,6 +90,6 @@ public class Decks {
                 + nrDecks
                 + ", decks="
                 + decks
-                +'}';
+                + '}';
     }
 }

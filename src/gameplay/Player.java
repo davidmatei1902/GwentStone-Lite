@@ -33,10 +33,6 @@ public class Player {
         }
     }
 
-    public void drawCardFromDeck(Card card) {
-
-    }
-
     public int getPlayerNumber() {
         return playerNumber;
     }

@@ -10,7 +10,7 @@ public final class CardInput {
     private ArrayList<String> colors;
     private String name;
 
-    public CardInput(CardInput card) {
+    public CardInput(final CardInput card) {
         mana = card.mana;
         attackDamage = card.attackDamage;
         health = card.health;
@@ -87,6 +87,6 @@ public final class CardInput {
                 +  ""
                 + name
                 + '\''
-              +'}';
+              + '}';
     }
 }

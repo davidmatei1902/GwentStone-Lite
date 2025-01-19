@@ -1,10 +1,18 @@
 package gameplay;
 
+import characters.hero.Hero;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import resources.*;
+
+import resources.Decks;
 import resources.Card;
+import resources.Board;
+import resources.Game;
+import resources.Round;
+import resources.Hand;
+import resources.StartGame;
+import resources.Actions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,10 +56,14 @@ public class GamePlay {
             StartGame startGame = game.getStartGame();
             //System.out.println(startGameInput);
             ArrayList<Actions> actions = game.getActions();
-            Card hero1 = startGame.getPlayerOneHero();
-            Card hero2 = startGame.getPlayerTwoHero();
-            hero1.setHealth(30);
-            hero2.setHealth(30);
+            Card heroOnecard = startGame.getPlayerOneHero();
+            Card heroTwocard = startGame.getPlayerTwoHero();
+
+            Hero hero1 = Card.createHero(heroOnecard);
+            Hero hero2 = Card.createHero(heroTwocard);
+
+            hero1.setHealth(hero1.getMaxHealth());
+            hero2.setHealth(hero2.getMaxHealth());
             int startPlayerIdx = startGame.getStartingPlayer();
             int p1DeckIdx = startGame.getPlayerOneDeckIdx();
             int p2DeckIdx = startGame.getPlayerTwoDeckIdx();
@@ -183,7 +195,7 @@ public class GamePlay {
         output.add(objectNode);
     }
 
-    public void getPlayerMana(final int playerIdx,final Player player) {
+    public void getPlayerMana(final int playerIdx, final Player player) {
         ObjectNode objectNode = mapper.createObjectNode();
         objectNode.put("command", "getPlayerMana");
         objectNode.put("playerIdx", playerIdx);
@@ -200,16 +212,14 @@ public class GamePlay {
         objectNode.put("command", "getCardsOnTable");
 
         ArrayNode allCardsNode = mapper.createArrayNode();
-        for(ArrayList<Card> row : board.getCards()) {
+        for (ArrayList<Card> row : board.getCards()) {
 
 
             ArrayNode eachRowNode = mapper.createArrayNode();
 
-            if(row == null  || row.isEmpty())
-            {
+            if (row == null  || row.isEmpty()) {
                 allCardsNode.add(eachRowNode);
-            }
-            else {
+            } else {
                 for (Card card : row) {
                     if (card != null) {
                         ObjectNode objectNodeCard = mapper.createObjectNode();
@@ -238,7 +248,7 @@ public class GamePlay {
     public void handlePlacingCard(final Player player, final Hand playerHand, final Card cardToBePlaced, final int handIdx, final ObjectNode objectNode) {
         int maxColums = board.getMaxColums();
         cardToBePlaced.addToBoard(board, player);
-        
+
         // if playerOne is placing card
 //        if (player.getPlayerNumber() == 1) {
 //            /// Last row of the board is full (back row of first player)
@@ -292,7 +302,7 @@ public class GamePlay {
             return;
         }
 
-        handlePlacingCard(player,playerHand,cardToBePlaced,handIdx,objectNode);
+        handlePlacingCard(player, playerHand, cardToBePlaced, handIdx, objectNode);
     }
 
     /**
@@ -307,7 +317,7 @@ public class GamePlay {
         Hand playerHand = player.getPlayerHand();
         ArrayNode arrayNode = mapper.createArrayNode();
         for (Card card : playerHand.getCards()) {
-            if(card != null) {
+            if (card != null) {
                 ObjectNode objectNodeCard = mapper.createObjectNode();
                 objectNodeCard.put("mana", card.getMana());
                 objectNodeCard.put("attackDamage", card.getAttackDamage());
@@ -356,10 +366,14 @@ public class GamePlay {
 
         round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
 
-        if (!p1Deck.isEmpty()) playerOneHand.addCard(p1Deck.remove(0));
-        if (!p2Deck.isEmpty()) playerTwoHand.addCard(p2Deck.remove(0));
+        if (!p1Deck.isEmpty()) {
+            playerOneHand.addCard(p1Deck.remove(0));
+        }
+        if (!p2Deck.isEmpty()) {
+            playerTwoHand.addCard(p2Deck.remove(0));
+        }
 
-        int manaToAdd = Math.min(round.getCurrentRoundNumber(), 10);
+        int manaToAdd = Math.min(round.getCurrentRoundNumber(), round.getMaxRoundsNumber());
 
         playerOne.incrementManaBy(manaToAdd);
         playerTwo.incrementManaBy(manaToAdd);
@@ -386,8 +400,12 @@ public class GamePlay {
         round.setCurrentPlayerTurn(startingPlayer);
 
         if (round.getCurrentRoundNumber() == 0) {
-            if (!p1Deck.isEmpty()) playerOneHand.addCard(p1Deck.remove(0));
-            if (!p2Deck.isEmpty()) playerTwoHand.addCard(p2Deck.remove(0));
+            if (!p1Deck.isEmpty()) {
+                playerOneHand.addCard(p1Deck.remove(0));
+            }
+            if (!p2Deck.isEmpty()) {
+                playerTwoHand.addCard(p2Deck.remove(0));
+            }
             round.setCurrentRoundNumber(1);
         }
 
@@ -405,7 +423,7 @@ public class GamePlay {
                     }
                     break;
                 case "endPlayerTurn":
-                    handleEndTurn(p1Deck,p2Deck,playerOneHand,playerTwoHand);
+                    handleEndTurn(p1Deck, p2Deck, playerOneHand, playerTwoHand);
                     break;
                 case "getPlayerDeck":
                     playerIdx = action.getPlayerIdx();
@@ -447,8 +465,6 @@ public class GamePlay {
                 default:
                     break;
             }
-
-
         }
     }
 }

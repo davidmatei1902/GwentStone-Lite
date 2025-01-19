@@ -1,7 +1,7 @@
 package resources;
 
 import fileio.Coordinates;
-import fileio.*;
+import fileio.ActionsInput;
 
 public class Actions {
     private String command;
@@ -13,7 +13,7 @@ public class Actions {
     private int x;
     private int y;
 
-    public Actions(ActionsInput actions) {
+    public Actions(final ActionsInput actions) {
         this.command = actions.getCommand();
         this.handIdx = actions.getHandIdx();
         this.cardAttacker = actions.getCardAttacker();
@@ -28,7 +28,7 @@ public class Actions {
         return command;
     }
 
-    public void setCommand(String command) {
+    public void setCommand(final String command) {
         this.command = command;
     }
 
@@ -36,7 +36,7 @@ public class Actions {
         return handIdx;
     }
 
-    public void setHandIdx(int handIdx) {
+    public void setHandIdx(final int handIdx) {
         this.handIdx = handIdx;
     }
 
@@ -44,7 +44,7 @@ public class Actions {
         return cardAttacker;
     }
 
-    public void setCardAttacker(Coordinates cardAttacker) {
+    public void setCardAttacker(final Coordinates cardAttacker) {
         this.cardAttacker = cardAttacker;
     }
 
@@ -52,7 +52,7 @@ public class Actions {
         return cardAttacked;
     }
 
-    public void setCardAttacked(Coordinates cardAttacked) {
+    public void setCardAttacked(final Coordinates cardAttacked) {
         this.cardAttacked = cardAttacked;
     }
 
@@ -60,7 +60,7 @@ public class Actions {
         return affectedRow;
     }
 
-    public void setAffectedRow(int affectedRow) {
+    public void setAffectedRow(final int affectedRow) {
         this.affectedRow = affectedRow;
     }
 
@@ -68,7 +68,7 @@ public class Actions {
         return playerIdx;
     }
 
-    public void setPlayerIdx(int playerIdx) {
+    public void setPlayerIdx(final int playerIdx) {
         this.playerIdx = playerIdx;
     }
 
@@ -76,7 +76,7 @@ public class Actions {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(final int x) {
         this.x = x;
     }
 
@@ -84,7 +84,7 @@ public class Actions {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(final int y) {
         this.y = y;
     }
 }

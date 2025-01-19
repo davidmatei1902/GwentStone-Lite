@@ -1,15 +1,15 @@
 package resources;
 
-import com.sun.source.tree.AnnotatedTypeTree;
+import characters.hero.Hero;
 import fileio.CardInput;
-import minions.normalMinions.Berserker;
-import minions.normalMinions.Goliath;
-import minions.normalMinions.Sentinel;
-import minions.normalMinions.Warden;
-import minions.speacialMinions.Disciple;
-import minions.speacialMinions.Miraj;
-import minions.speacialMinions.TheCursedOne;
-import minions.speacialMinions.TheRipper;
+import characters.normalMinions.Berserker;
+import characters.normalMinions.Goliath;
+import characters.normalMinions.Sentinel;
+import characters.normalMinions.Warden;
+import characters.speacialMinions.Disciple;
+import characters.speacialMinions.Miraj;
+import characters.speacialMinions.TheCursedOne;
+import characters.speacialMinions.TheRipper;
 
 import gameplay.Player;
 
@@ -29,12 +29,11 @@ public class Card {
         return isFrozen;
     }
 
-    public void setFrozenStatus(boolean frozen) {
+    public void setFrozenStatus(final boolean frozen) {
         isFrozen = frozen;
     }
 
-    public Card()
-    {
+    public Card() {
         mana = 0;
         attackDamage = 0;
         health = 0;
@@ -43,7 +42,7 @@ public class Card {
         name = "";
     }
 
-    public Card(Card card) {
+    public Card(final Card card) {
         this.mana = card.mana;
         this.attackDamage = card.attackDamage;
         this.health = card.health;
@@ -52,7 +51,18 @@ public class Card {
         this.name = card.name;
     }
 
-    public static Card createCard(CardInput cardInput) {
+    public static Hero createHero(final Card card)
+    {
+        return new Hero(card);
+    }
+
+
+    /**
+     * Function that creates a Card given by the name
+     * @param cardInput
+     * @return A card based of its name
+     */
+    public static Card createCard(final CardInput cardInput) {
         switch (cardInput.getName()) {
             case "Warden":
                 return new Warden(cardInput);
@@ -77,7 +87,12 @@ public class Card {
         }
     }
 
-    public static Card createCard(Card card) {
+    /**
+     * Function that creates a Card given by the name
+     * @param card
+     * @return A card based of its name
+     */
+    public static Card createCard(final Card card) {
         switch (card.getName()) {
             case "Warden":
                 return new Warden(card);
@@ -103,7 +118,7 @@ public class Card {
         }
     }
 
-    public Card(CardInput cardInput) {
+    public Card(final CardInput cardInput) {
         this.mana = cardInput.getMana();
         this.attackDamage = cardInput.getAttackDamage();
         this.health = cardInput.getHealth();
@@ -112,29 +127,35 @@ public class Card {
         this.name = cardInput.getName();
     }
 
-    public void addToBoard(Board board, Player player) {
+    /**
+     * Implementation of a function that add a Card to the board
+     * @param board
+     * @param player
+     */
+    public void addToBoard(final Board board, final Player player) {
+
     }
-    public void setMana(int mana) {
+    public void setMana(final int mana) {
         this.mana = mana;
     }
 
-    public void setAttackDamage(int attackDamage) {
+    public void setAttackDamage(final int attackDamage) {
         this.attackDamage = attackDamage;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(final int health) {
         this.health = health;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
-    public void setColors(ArrayList<String> colors) {
+    public void setColors(final ArrayList<String> colors) {
         this.colors = colors;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -180,6 +201,6 @@ public class Card {
                 +  ""
                 + name
                 + '\''
-                +'}';
+                + '}';
     }
 }

@@ -1,6 +1,6 @@
 package resources;
 
-import fileio.*;
+import fileio.StartGameInput;
 
 public class StartGame {
     private int playerOneDeckIdx;
@@ -11,7 +11,7 @@ public class StartGame {
     private int startingPlayer;
 
 
-    public StartGame(StartGameInput startGameInput) {
+    public StartGame(final StartGameInput startGameInput) {
         this.playerOneDeckIdx = startGameInput.getPlayerOneDeckIdx();
         this.playerTwoDeckIdx = startGameInput.getPlayerTwoDeckIdx();
         this.shuffleSeed = startGameInput.getShuffleSeed();
@@ -24,7 +24,7 @@ public class StartGame {
         return playerOneDeckIdx;
     }
 
-    public void setPlayerOneDeckIdx(int playerOneDeckIdx) {
+    public void setPlayerOneDeckIdx(final int playerOneDeckIdx) {
         this.playerOneDeckIdx = playerOneDeckIdx;
     }
 
@@ -32,7 +32,7 @@ public class StartGame {
         return playerTwoDeckIdx;
     }
 
-    public void setPlayerTwoDeckIdx(int playerTwoDeckIdx) {
+    public void setPlayerTwoDeckIdx(final int playerTwoDeckIdx) {
         this.playerTwoDeckIdx = playerTwoDeckIdx;
     }
 
@@ -40,7 +40,7 @@ public class StartGame {
         return shuffleSeed;
     }
 
-    public void setShuffleSeed(int shuffleSeed) {
+    public void setShuffleSeed(final int shuffleSeed) {
         this.shuffleSeed = shuffleSeed;
     }
 
@@ -48,7 +48,7 @@ public class StartGame {
         return playerOneHero;
     }
 
-    public void setPlayerOneHero(Card playerOneHero) {
+    public void setPlayerOneHero(final Card playerOneHero) {
         this.playerOneHero = playerOneHero;
     }
 
@@ -56,7 +56,7 @@ public class StartGame {
         return playerTwoHero;
     }
 
-    public void setPlayerTwoHero(Card playerTwoHero) {
+    public void setPlayerTwoHero(final Card playerTwoHero) {
         this.playerTwoHero = playerTwoHero;
     }
 
@@ -64,7 +64,7 @@ public class StartGame {
         return startingPlayer;
     }
 
-    public void setStartingPlayer(int startingPlayer) {
+    public void setStartingPlayer(final int startingPlayer) {
         this.startingPlayer = startingPlayer;
     }
 

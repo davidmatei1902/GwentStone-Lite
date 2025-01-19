@@ -1,5 +1,6 @@
 package resources;
 
+import fileio.CardInput;
 import fileio.DecksInput;
 import fileio.GameInput;
 
@@ -11,12 +12,18 @@ public class MainGame {
     private ArrayList<Game> games;
 
 
-    public MainGame(DecksInput playerOneDecks, DecksInput playerTwoDecks, ArrayList<GameInput> games) {
-        this.playerOneDecks = new Decks(playerOneDecks.getNrCardsInDeck(), playerOneDecks.getNrDecks(), playerOneDecks.getDecks());
-        this.playerTwoDecks = new Decks(playerTwoDecks.getNrCardsInDeck(), playerTwoDecks.getNrDecks(), playerTwoDecks.getDecks());
+    public MainGame(final DecksInput playerOneDecks, final DecksInput playerTwoDecks, final ArrayList<GameInput> games) {
+        int nrCardsInDeck1 = playerOneDecks.getNrCardsInDeck();
+        int nrCardsInDeck2 = playerTwoDecks.getNrCardsInDeck();
+        int nrDecks1 = playerOneDecks.getNrDecks();
+        int nrDecks2 = playerTwoDecks.getNrDecks();
+        ArrayList<ArrayList<CardInput>> p1Deck = playerOneDecks.getDecks();
+        ArrayList<ArrayList<CardInput>> p2Deck = playerTwoDecks.getDecks();
+        this.playerOneDecks = new Decks(nrCardsInDeck1, nrDecks1, p1Deck);
+        this.playerTwoDecks = new Decks(nrCardsInDeck2, nrDecks2, p2Deck);
 
         this.games = new ArrayList<>(games.size());
-        for(GameInput g : games) {
+        for (GameInput g : games) {
             Game correctGame = new Game(g);
             this.games.add(correctGame);
         }
@@ -25,7 +32,7 @@ public class MainGame {
         return playerOneDecks;
     }
 
-    public void setPlayerOneDecks(Decks playerOneDecks) {
+    public void setPlayerOneDecks(final Decks playerOneDecks) {
         this.playerOneDecks = playerOneDecks;
     }
 
@@ -33,7 +40,7 @@ public class MainGame {
         return playerTwoDecks;
     }
 
-    public void setPlayerTwoDecks(Decks playerTwoDecks) {
+    public void setPlayerTwoDecks(final Decks playerTwoDecks) {
         this.playerTwoDecks = playerTwoDecks;
     }
 
@@ -41,7 +48,7 @@ public class MainGame {
         return games;
     }
 
-    public void setGames(ArrayList<Game> games) {
+    public void setGames(final ArrayList<Game> games) {
         this.games = games;
     }
 
