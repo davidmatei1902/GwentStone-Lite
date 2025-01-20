@@ -5,6 +5,13 @@ public final class Coordinates {
 
    public Coordinates() {
    }
+   public boolean isPlayerOneSpace() {
+      return this.x == 3 || this.x == 2;
+   }
+
+   public boolean isPlayerTwoSpace() {
+      return this.x == 1 || this.x == 0;
+   }
 
    public int getX() {
       return x;

@@ -30,6 +30,17 @@ public class Board {
 
         return cards.get(x).get(y);
     }
+
+    public void eliminateCardFromPos(final int x, final int y) {
+        if (x < 0 || x >= cards.size()) {
+            return;
+        }
+        ArrayList<Card> row = cards.get(x);
+        if (y < 0 || y >= row.size()) {
+            return;
+        }
+        row.remove(y);
+    }
     public ArrayList<ArrayList<Card>> getCards() {
         return cards;
     }

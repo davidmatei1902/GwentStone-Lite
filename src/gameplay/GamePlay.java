@@ -28,9 +28,6 @@ public class GamePlay {
     private Player playerTwo;
     private ArrayNode output;
 
-    private Board board = new Board();
-    private Round round = new Round();
-
     private ObjectMapper mapper = new ObjectMapper();
 
     private EventsHandler eventHandler = new EventsHandler();
@@ -221,14 +218,11 @@ public class GamePlay {
 
 
 
-        cardToBePlaced.addToBoard(board, player);
+        cardToBePlaced.addToBoard(eventHandler.getBoard(), player);
     }
 
     public void cardUsesAttack(final Coordinates attackerPos, final Coordinates attackedPos) {
-        Card attacker = board.getAtPos(attackerPos.getX(), attackerPos.getY());
-        Card attacked = board.getAtPos(attackedPos.getX(), attackedPos.getY());
-
-        eventHandler.handleAttack(attacker, attacked);
+        eventHandler.handleAttack(attackerPos, attackedPos);
     }
 
     /**
@@ -260,7 +254,7 @@ public class GamePlay {
         objectNode.put("y", y);
 
 
-        Card respectiveCard = board.getAtPos(x,y);
+        Card respectiveCard = eventHandler.getBoard().getAtPos(x,y);
         if(respectiveCard == null)
         {
             objectNode.put("output","No card available at that position.");
@@ -274,6 +268,7 @@ public class GamePlay {
     }
 
     private void handleEndTurn(final ArrayList<Card> p1Deck, final ArrayList<Card> p2Deck, final Hand playerOneHand, final Hand playerTwoHand) {
+        Round round = eventHandler.getRound();
         if (round.getCurrentPlayerTurn() == 1) {
             // end player one turn
             playerOne.unFreezeCards(playerOne.getPlayerHand());
@@ -297,10 +292,10 @@ public class GamePlay {
     }
 
     private void startNewRound(final ArrayList<Card> p1Deck, final ArrayList<Card> p2Deck, final Hand playerOneHand, final Hand playerTwoHand) {
-        round.setPlayerOneHasEndedHisTurn(0);
-        round.setPlayerTwoHasEndedHisTurn(0);
+        eventHandler.getRound().setPlayerOneHasEndedHisTurn(0);
+        eventHandler.getRound().setPlayerTwoHasEndedHisTurn(0);
 
-        round.setCurrentRoundNumber(round.getCurrentRoundNumber() + 1);
+        eventHandler.getRound().setCurrentRoundNumber(eventHandler.getRound().getCurrentRoundNumber() + 1);
 
         if (!p1Deck.isEmpty()) {
             playerOneHand.addCard(p1Deck.remove(0));
@@ -309,7 +304,7 @@ public class GamePlay {
             playerTwoHand.addCard(p2Deck.remove(0));
         }
 
-        int manaToAdd = Math.min(round.getCurrentRoundNumber(), round.getMaxRoundsNumber());
+        int manaToAdd = Math.min(eventHandler.getRound().getCurrentRoundNumber(), eventHandler.getRound().getMaxRoundsNumber());
 
         playerOne.incrementManaBy(manaToAdd);
         playerTwo.incrementManaBy(manaToAdd);
@@ -333,11 +328,11 @@ public class GamePlay {
 
         Hand playerOneHand = playerOne.getPlayerHand();
         Hand playerTwoHand = playerTwo.getPlayerHand();
-        round.setCurrentPlayerTurn(startingPlayer);
+        eventHandler.getRound().setCurrentPlayerTurn(startingPlayer);
 
 
         // draw first card from deck and set round
-        round.setCurrentRoundNumber(1);
+        eventHandler.getRound().setCurrentRoundNumber(1);
         playerOneHand.addCard(p1Deck.removeFirst());
         playerTwoHand.addCard(p2Deck.removeFirst());
 
@@ -348,7 +343,7 @@ public class GamePlay {
                 // TODO HANDLE WRONG PLACING CARD ACCORDINGLY
                 case "placeCard":
                     int handIdx = action.getHandIdx();
-                    if (round.getCurrentPlayerTurn() == 1) {
+                    if (eventHandler.getRound().getCurrentPlayerTurn() == 1) {
                         placeCard(playerOne, playerOneHand, handIdx);
                     } else {
                         placeCard(playerTwo, playerTwoHand, handIdx);
@@ -371,7 +366,7 @@ public class GamePlay {
                     }
                     break;
                 case "getPlayerTurn":
-                    getPlayerTurn(round.getCurrentPlayerTurn());
+                    getPlayerTurn(eventHandler.getRound().getCurrentPlayerTurn());
                     break;
                 case "getCardAtPosition":
                     int x = action.getX();
@@ -379,7 +374,7 @@ public class GamePlay {
                     getCardAtPosition(x,y);
                     break;
                 case "getCardsOnTable":
-                    getCardsOnTable(board);
+                    getCardsOnTable(eventHandler.getBoard());
                     break;
                 case "getCardsInHand":
                     playerIdx = action.getPlayerIdx();

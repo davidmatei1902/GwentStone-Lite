@@ -14,6 +14,7 @@ import characters.speacialMinions.Miraj;
 import characters.speacialMinions.TheCursedOne;
 import characters.speacialMinions.TheRipper;
 
+import fileio.Coordinates;
 import gameplay.Player;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Card {
         private String name;
 
         private boolean isFrozen = false;
+
         private boolean hasAttacked = false;
 
     public boolean getFrozenStatus() {
@@ -35,6 +37,14 @@ public class Card {
 
     public void setFrozenStatus(final boolean frozen) {
         isFrozen = frozen;
+    }
+
+    public boolean HasAttacked() {
+        return hasAttacked == true;
+    }
+
+    public boolean isFrozen() {
+        return isFrozen == true;
     }
 
     public Card() {
@@ -53,6 +63,10 @@ public class Card {
         this.description = card.description;
         this.colors = card.colors;
         this.name = card.name;
+    }
+
+    public void useSpecialAbility(final Card card, final Coordinates attackerPos, final Coordinates attackedPos, final Board board) {
+
     }
 
     public static Hero createHero(final Card card) {
@@ -153,6 +167,10 @@ public class Card {
      * @param player
      */
     public void addToBoard(final Board board, final Player player) {
+    }
+
+    public void increaseHealthBy(final int value) {
+        this.health += value;
     }
     public void setMana(final int mana) {
         this.mana = mana;
