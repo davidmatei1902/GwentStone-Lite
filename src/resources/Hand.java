@@ -21,11 +21,16 @@ public class Hand {
      */
     public Card getCard(final int index) {
         if (index >= 0 && index < cards.size()) {
-            Card card = cards.remove(index);
-            //System.out.println(card);
+            Card card = cards.get(index);
             return card;
         } else {
             return null;
+        }
+    }
+
+    public void removeCardAtIndex(final int index) {
+        if (index >= 0 && index < cards.size()) {
+            Card card = cards.remove(index);
         }
     }
 

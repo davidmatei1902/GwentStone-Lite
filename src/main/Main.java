@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
-import fileio.*;
 import gameplay.GamePlay;
 import resources.MainGame;
 
@@ -18,7 +17,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import resources.*;
+import fileio.Input;
+
+import resources.Game;
+import resources.Decks;
+
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.

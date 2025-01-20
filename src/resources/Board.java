@@ -9,6 +9,7 @@ public class Board {
     private static final int MAX_ROWS = 4;
 
 
+
     public Board() {
 
         cards = new ArrayList<>();
@@ -18,6 +19,17 @@ public class Board {
         }
     }
 
+    public Card getAtPos(final int x, final int y) {
+        if (x < 0 || x >= cards.size()) {
+            return null;
+        }
+        ArrayList<Card> row = cards.get(x);
+        if (y < 0 || y >= row.size()) {
+            return null;
+        }
+
+        return cards.get(x).get(y);
+    }
     public ArrayList<ArrayList<Card>> getCards() {
         return cards;
     }

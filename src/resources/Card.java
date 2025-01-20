@@ -1,6 +1,9 @@
 package resources;
 
 import characters.hero.Hero;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.CardInput;
 import characters.normalMinions.Berserker;
 import characters.normalMinions.Goliath;
@@ -24,6 +27,7 @@ public class Card {
         private String name;
 
         private boolean isFrozen = false;
+        private boolean hasAttacked = false;
 
     public boolean getFrozenStatus() {
         return isFrozen;
@@ -51,9 +55,25 @@ public class Card {
         this.name = card.name;
     }
 
-    public static Hero createHero(final Card card)
-    {
+    public static Hero createHero(final Card card) {
         return new Hero(card);
+    }
+
+    public ObjectNode createOutputWrapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode objectNodeCard = mapper.createObjectNode();
+        objectNodeCard.put("mana", this.getMana());
+        objectNodeCard.put("attackDamage", this.getAttackDamage());
+        objectNodeCard.put("health", this.getHealth());
+        objectNodeCard.put("description", this.getDescription());
+
+        ArrayNode arrayNodeColors = mapper.createArrayNode();
+        for (String color : this.getColors()) {
+            arrayNodeColors.add(color);
+        }
+        objectNodeCard.set("colors", arrayNodeColors);
+        objectNodeCard.put("name", this.getName());
+        return objectNodeCard;
     }
 
 
@@ -114,7 +134,7 @@ public class Card {
 
             default:
                 System.out.println("Unknown card type: " + card.getName());
-                return null;  // Return null or a default card type
+                return null;
         }
     }
 
@@ -133,7 +153,6 @@ public class Card {
      * @param player
      */
     public void addToBoard(final Board board, final Player player) {
-
     }
     public void setMana(final int mana) {
         this.mana = mana;

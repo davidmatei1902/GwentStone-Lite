@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import fileio.Coordinates;
+import gameplay.events.EventsHandler;
 import resources.Decks;
 import resources.Card;
 import resources.Board;
@@ -25,10 +27,13 @@ public class GamePlay {
     private Player playerOne;
     private Player playerTwo;
     private ArrayNode output;
+
     private Board board = new Board();
     private Round round = new Round();
 
     private ObjectMapper mapper = new ObjectMapper();
+
+    private EventsHandler eventHandler = new EventsHandler();
 
 
     public GamePlay(final ArrayList<Game> games, final Decks p1Decks,
@@ -42,7 +47,6 @@ public class GamePlay {
         playerOne.setPlayerNumber(1);
         this.playerTwo = new Player();
         playerTwo.setPlayerNumber(2);
-        /////////////////////////////////
 
         this.output = output;
     }
@@ -56,15 +60,16 @@ public class GamePlay {
             StartGame startGame = game.getStartGame();
             //System.out.println(startGameInput);
             ArrayList<Actions> actions = game.getActions();
+
             Card heroOnecard = startGame.getPlayerOneHero();
             Card heroTwocard = startGame.getPlayerTwoHero();
 
+            // convert Hero from Card Class to Hero Class
             Hero hero1 = Card.createHero(heroOnecard);
             Hero hero2 = Card.createHero(heroTwocard);
 
-            hero1.setHealth(hero1.getMaxHealth());
-            hero2.setHealth(hero2.getMaxHealth());
-            int startPlayerIdx = startGame.getStartingPlayer();
+            hero1.setHealth(Hero.getMaxHealth());
+            hero2.setHealth(Hero.getMaxHealth());
             int p1DeckIdx = startGame.getPlayerOneDeckIdx();
             int p2DeckIdx = startGame.getPlayerTwoDeckIdx();
             ArrayList<Card> p1DeckCopy = new ArrayList<>();
@@ -72,23 +77,15 @@ public class GamePlay {
 
             int startingPlayer = startGame.getStartingPlayer();
 
-//            CardInput firstPlayerOneCard = p1Decks.getCardFromDeck(p1DeckIdx);
-//            CardInput firstPlayerTwoCard = p2Decks.getCardFromDeck(p2DeckIdx);
-//
-//            p1DeckCopy.add(new CardInput(firstPlayerOneCard));
-//            p2DeckCopy.add(new CardInput(firstPlayerTwoCard));
 
             for (Card card : p1Decks.getDeck(p1DeckIdx)) {
-//                p1DeckCopy.add(new Card(card));
                 p1DeckCopy.add(Card.createCard(card));
             }
 
             for (Card card : p2Decks.getDeck(p2DeckIdx)) {
-//                p2DeckCopy.add(new Card(card));
                 p2DeckCopy.add(Card.createCard(card));
 
             }
-
 
             long seed = startGame.getShuffleSeed();
             Random random1 = new Random(seed);
@@ -96,34 +93,16 @@ public class GamePlay {
             Random random2 = new Random(seed);
             Collections.shuffle(p2DeckCopy, random2);
 
-
-            // todo *****THINGS*****
-//            Card firstPlayerOneCard = p1DeckCopy.removeFirst();
-//            Card firstPlayerTwoCard = p2DeckCopy.removeFirst();
-            // todo *****THINGS*****
-
-
-
             // init every player's hands
             Hand playerOneHand = new Hand();
             Hand playerTwoHand = new Hand();
             playerOne.setPlayerHand(playerOneHand);
             playerTwo.setPlayerHand(playerTwoHand);
 
-            // todo *****THINGS*****
-//            playerOne.getPlayerHand().addCard(firstPlayerOneCard);
-//            playerTwo.getPlayerHand().addCard(firstPlayerTwoCard);
-            // todo *****THINGS*****
-
-
-
             // debug
 //            playerOne.getPlayerHand().printHand();
 //            playerTwo.getPlayerHand().printHand();
 //            System.out.println("\n");
-
-            playerOne.setMana(1);
-            playerTwo.setMana(1);
 
             startGame(hero1, hero2, p1DeckCopy, p2DeckCopy, startGame, actions, startingPlayer);
       }
@@ -141,17 +120,7 @@ public class GamePlay {
         objectNode.put("command", "getPlayerDeck");
         objectNode.put("playerIdx", playerIdx);
         for (Card card : deck) {
-            ObjectNode objectNodeCard = mapper.createObjectNode();
-            objectNodeCard.put("mana", card.getMana());
-            objectNodeCard.put("attackDamage", card.getAttackDamage());
-            objectNodeCard.put("health", card.getHealth());
-            objectNodeCard.put("description", card.getDescription());
-            ArrayNode arrayNodeColors = mapper.createArrayNode();
-            for (String color : card.getColors()) {
-                arrayNodeColors.add(color);
-            }
-            objectNodeCard.set("colors", arrayNodeColors);
-            objectNodeCard.put("name", card.getName());
+            ObjectNode objectNodeCard = card.createOutputWrapper();
             arrayNode.add(objectNodeCard);
         }
         objectNode.set("output", arrayNode);
@@ -163,23 +132,12 @@ public class GamePlay {
      * @param playerIdx
      * @param hero
      */
-    public void getPlayerHero(final int playerIdx, final Card hero) {
+    public void getPlayerHero(final int playerIdx, final Hero hero) {
         ObjectNode objectNode = mapper.createObjectNode(); // {}
         objectNode.put("command", "getPlayerHero");
         objectNode.put("playerIdx", playerIdx);
 
-        ObjectNode objectNodeCard = mapper.createObjectNode();
-        objectNodeCard.put("mana", hero.getMana());
-        objectNodeCard.put("description", hero.getDescription());
-
-        ArrayNode arrayNodeColors = mapper.createArrayNode();
-        for (String color : hero.getColors()) {
-            arrayNodeColors.add(color);
-        }
-        objectNodeCard.set("colors", arrayNodeColors);
-        objectNodeCard.put("name", hero.getName());
-        objectNodeCard.put("health", hero.getHealth());
-
+        ObjectNode objectNodeCard = hero.createOutputWrapper();
         objectNode.set("output", objectNodeCard);
         output.add(objectNode);
     }
@@ -213,66 +171,24 @@ public class GamePlay {
 
         ArrayNode allCardsNode = mapper.createArrayNode();
         for (ArrayList<Card> row : board.getCards()) {
-
-
             ArrayNode eachRowNode = mapper.createArrayNode();
-
-            if (row == null  || row.isEmpty()) {
-                allCardsNode.add(eachRowNode);
-            } else {
-                for (Card card : row) {
-                    if (card != null) {
-                        ObjectNode objectNodeCard = mapper.createObjectNode();
-                        objectNodeCard.put("mana", card.getMana());
-                        objectNodeCard.put("attackDamage", card.getAttackDamage());
-                        objectNodeCard.put("health", card.getHealth());
-                        objectNodeCard.put("description", card.getDescription());
-                        ArrayNode arrayNodeColors = mapper.createArrayNode();
-                        for (String color : card.getColors()) {
-                            arrayNodeColors.add(color);
-                        }
-                        objectNodeCard.set("colors", arrayNodeColors);
-                        objectNodeCard.put("name", card.getName());
-
-                        eachRowNode.add(objectNodeCard);
-                    }
-                }
+            if (row == null) {
                 allCardsNode.add(eachRowNode);
             }
+
+            for (Card card : row) {
+                if (card == null) {
+                    return;
+                }
+                ObjectNode objectNodeCardWrapper = card.createOutputWrapper();
+                eachRowNode.add(objectNodeCardWrapper);
+            }
+            allCardsNode.add(eachRowNode);
         }
 
         objectNode.put("output", allCardsNode);
         output.add(objectNode);
     }
-
-    public void handlePlacingCard(final Player player, final Hand playerHand, final Card cardToBePlaced, final int handIdx, final ObjectNode objectNode) {
-        int maxColums = board.getMaxColums();
-        cardToBePlaced.addToBoard(board, player);
-
-        // if playerOne is placing card
-//        if (player.getPlayerNumber() == 1) {
-//            /// Last row of the board is full (back row of first player)
-//            if (board.getCards().get(3).size() > maxColums) {
-//                objectNode.put("command", "placeCard");
-//                objectNode.put("handIdx", handIdx);
-//                objectNode.put("error", "Cannot place card on table since row is full.");
-//                return;
-//            } else {
-//                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
-//            }
-//        } else {
-//            /// First row of the board is full (back row of second player)
-//            if (board.getCards().get(0).size() > maxColums) {
-//                objectNode.put("command", "placeCard");
-//                objectNode.put("handIdx", handIdx);
-//                objectNode.put("error", "Cannot place card on table since column is full.");
-//                return;
-//            } else {
-//                board.addCardToBoard(cardToBePlaced, player.getPlayerNumber());
-//            }
-//        }
-    }
-
 
     /**
      * Function place card on board
@@ -280,18 +196,10 @@ public class GamePlay {
      * @param handIdx card index from hand which want to be placed
      * @param playerHand player hand
      */
-    // already known which player I am
     public void placeCard(final Player player, final Hand playerHand, final int handIdx) {
         ObjectNode objectNode = mapper.createObjectNode();
 
         Card cardToBePlaced = playerHand.getCard(handIdx);
-
-
-        ///   TODO IF CARD FROM HAND IS NULL, DO SOMETHING
-        if (cardToBePlaced == null) {
-            return;
-        }
-        //System.out.println(cardToBePlaced);
 
         // handle not enough mana
         if (cardToBePlaced.getMana() > player.getMana()) {
@@ -302,7 +210,25 @@ public class GamePlay {
             return;
         }
 
-        handlePlacingCard(player, playerHand, cardToBePlaced, handIdx, objectNode);
+        // remove given card
+        playerHand.removeCardAtIndex(handIdx);
+
+        ///   TODO IF CARD THAT CAN BE DRAW FROM HAND IS INVALID, DO SOMETHING
+        if (cardToBePlaced == null) {
+            return;
+        }
+        //System.out.println(cardToBePlaced);
+
+
+
+        cardToBePlaced.addToBoard(board, player);
+    }
+
+    public void cardUsesAttack(final Coordinates attackerPos, final Coordinates attackedPos) {
+        Card attacker = board.getAtPos(attackerPos.getX(), attackerPos.getY());
+        Card attacked = board.getAtPos(attackedPos.getX(), attackedPos.getY());
+
+        eventHandler.handleAttack(attacker, attacked);
     }
 
     /**
@@ -317,23 +243,33 @@ public class GamePlay {
         Hand playerHand = player.getPlayerHand();
         ArrayNode arrayNode = mapper.createArrayNode();
         for (Card card : playerHand.getCards()) {
-            if (card != null) {
-                ObjectNode objectNodeCard = mapper.createObjectNode();
-                objectNodeCard.put("mana", card.getMana());
-                objectNodeCard.put("attackDamage", card.getAttackDamage());
-                objectNodeCard.put("health", card.getHealth());
-                objectNodeCard.put("description", card.getDescription());
-
-                ArrayNode arrayNodeColors = mapper.createArrayNode();
-                for (String color : card.getColors()) {
-                    arrayNodeColors.add(color);
-                }
-                objectNodeCard.set("colors", arrayNodeColors);
-                objectNodeCard.put("name", card.getName());
-                arrayNode.add(objectNodeCard);
+            if (card == null) {
+                return;
             }
+            ObjectNode objectNodeCardWrapper = card.createOutputWrapper();
+            arrayNode.add(objectNodeCardWrapper);
         }
         objectNode.set("output", arrayNode);
+        output.add(objectNode);
+    }
+    public void getCardAtPosition(final int x,final int y)
+    {
+        ObjectNode objectNode = mapper.createObjectNode();
+        objectNode.put("command", "getCardAtPosition");
+        objectNode.put("x", x);
+        objectNode.put("y", y);
+
+
+        Card respectiveCard = board.getAtPos(x,y);
+        if(respectiveCard == null)
+        {
+            objectNode.put("output","No card available at that position.");
+            output.add(objectNode);
+            return;
+        }
+        ObjectNode cardOutputNode = respectiveCard.createOutputWrapper();
+
+        objectNode.put("output",cardOutputNode);
         output.add(objectNode);
     }
 
@@ -389,7 +325,7 @@ public class GamePlay {
      * @param actions
      * @param startingPlayer
      */
-    public void startGame(final Card hero1, final Card hero2,
+    public void startGame(final Hero hero1, final Hero hero2,
                           final ArrayList<Card> p1Deck,
                           final ArrayList<Card> p2Deck,
                           final StartGame startGameInput,
@@ -399,15 +335,11 @@ public class GamePlay {
         Hand playerTwoHand = playerTwo.getPlayerHand();
         round.setCurrentPlayerTurn(startingPlayer);
 
-        if (round.getCurrentRoundNumber() == 0) {
-            if (!p1Deck.isEmpty()) {
-                playerOneHand.addCard(p1Deck.remove(0));
-            }
-            if (!p2Deck.isEmpty()) {
-                playerTwoHand.addCard(p2Deck.remove(0));
-            }
-            round.setCurrentRoundNumber(1);
-        }
+
+        // draw first card from deck and set round
+        round.setCurrentRoundNumber(1);
+        playerOneHand.addCard(p1Deck.removeFirst());
+        playerTwoHand.addCard(p2Deck.removeFirst());
 
         for (Actions action : actions) {
             int playerIdx;
@@ -421,6 +353,11 @@ public class GamePlay {
                     } else {
                         placeCard(playerTwo, playerTwoHand, handIdx);
                     }
+                    break;
+                case "cardUsesAttack":
+                    Coordinates attackerPos = action.getCardAttacker();
+                    Coordinates attackedPos = action.getCardAttacked();
+                    cardUsesAttack(attackerPos,attackedPos);
                     break;
                 case "endPlayerTurn":
                     handleEndTurn(p1Deck, p2Deck, playerOneHand, playerTwoHand);
@@ -436,8 +373,13 @@ public class GamePlay {
                 case "getPlayerTurn":
                     getPlayerTurn(round.getCurrentPlayerTurn());
                     break;
+                case "getCardAtPosition":
+                    int x = action.getX();
+                    int y = action.getY();
+                    getCardAtPosition(x,y);
+                    break;
                 case "getCardsOnTable":
-                    getCardsOnTable(this.board);
+                    getCardsOnTable(board);
                     break;
                 case "getCardsInHand":
                     playerIdx = action.getPlayerIdx();

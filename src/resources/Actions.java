@@ -1,7 +1,8 @@
 package resources;
 
-import fileio.Coordinates;
 import fileio.ActionsInput;
+import fileio.Coordinates;
+
 
 public class Actions {
     private String command;
