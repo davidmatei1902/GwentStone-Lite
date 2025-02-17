@@ -19,6 +19,7 @@ public class BackRow extends Card {
         super(cardInput);
     }
 
+
     /**
      * Function that adds a card in the front row
      * @param board

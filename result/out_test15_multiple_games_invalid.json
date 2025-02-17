@@ -57,14 +57,7 @@
     "description" : "Premium card: Fear him. Your last breath is now.",
     "colors" : [ "Red", "Blue", "Pink" ],
     "name" : "Berserker"
-  } ], [ {
-    "mana" : 2,
-    "attackDamage" : 8,
-    "health" : 6,
-    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
-    "colors" : [ "Brown", "Blue" ],
-    "name" : "Warden"
-  } ], [ {
+  } ], [ ], [ {
     "mana" : 2,
     "attackDamage" : 4,
     "health" : 8,
@@ -205,13 +198,6 @@
     "colors" : [ "Purple", "Yellow" ],
     "name" : "Berserker"
   } ], [ {
-    "mana" : 2,
-    "attackDamage" : 8,
-    "health" : 6,
-    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
-    "colors" : [ "Brown", "Blue" ],
-    "name" : "Warden"
-  }, {
     "mana" : 2,
     "attackDamage" : 5,
     "health" : 7,

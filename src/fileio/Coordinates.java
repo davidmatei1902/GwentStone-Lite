@@ -3,6 +3,7 @@ package fileio;
 public final class Coordinates {
    private int x, y;
 
+
    public Coordinates() {
    }
    public boolean isPlayerOneSpace() {

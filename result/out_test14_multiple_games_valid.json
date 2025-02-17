@@ -257,15 +257,8 @@
     "name" : "The Ripper"
   }, {
     "mana" : 1,
-    "attackDamage" : 8,
-    "health" : 5,
-    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
-    "colors" : [ "Black", "White", "Green" ],
-    "name" : "Warden"
-  }, {
-    "mana" : 1,
     "attackDamage" : 5,
-    "health" : 7,
+    "health" : 1,
     "description" : "Standard card: A warrior who is never afraid of battle, no matter the costs",
     "colors" : [ "Red", "Purple" ],
     "name" : "Goliath"
@@ -414,7 +407,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 88
+  "output" : 87
 }, {
   "command" : "getPlayerTurn",
   "output" : 1
@@ -487,7 +480,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 110
+  "output" : 107
 }, {
   "command" : "getPlayerTurn",
   "output" : 2
@@ -504,7 +497,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 118
+  "output" : 115
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 1,
@@ -527,7 +520,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 127
+  "output" : 124
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 1,
@@ -593,7 +586,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 157
+  "output" : 154
 }, {
   "command" : "getPlayerTurn",
   "output" : 2
@@ -623,7 +616,7 @@
 }, {
   "command" : "getPlayerMana",
   "playerIdx" : 2,
-  "output" : 167
+  "output" : 164
 }, {
   "command" : "getCardsOnTable",
   "output" : [ [ {
@@ -670,17 +663,17 @@
     "name" : "The Ripper"
   }, {
     "mana" : 1,
-    "attackDamage" : 8,
-    "health" : 5,
-    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
-    "colors" : [ "Black", "White", "Green" ],
-    "name" : "Warden"
-  }, {
-    "mana" : 1,
     "attackDamage" : 5,
-    "health" : 7,
-    "description" : "Standard card: A warrior who is never afraid of battle, no matter the costs",
-    "colors" : [ "Red", "Purple" ],
+    "health" : 4,
+    "description" : "Premium card: Ravished by the winds of hell, no soul is to be forgiven.",
+    "colors" : [ "Orange", "Red", "Black" ],
+    "name" : "The Ripper"
+  }, {
+    "mana" : 2,
+    "attackDamage" : 4,
+    "health" : 8,
+    "description" : "Premium card: No matter how many, his body will fight. Save your breath for the Mountain is strong.",
+    "colors" : [ "Brown", "Black", "Grey" ],
     "name" : "Goliath"
   }, {
     "mana" : 1,

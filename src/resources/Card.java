@@ -65,6 +65,10 @@ public class Card {
         this.name = card.name;
     }
 
+    public void decreaseHealthBy(final int damagePoints) {
+        health -= damagePoints;
+    }
+
     public void useSpecialAbility(final Card card, final Coordinates attackerPos, final Coordinates attackedPos, final Board board) {
 
     }
@@ -88,6 +92,25 @@ public class Card {
         objectNodeCard.set("colors", arrayNodeColors);
         objectNodeCard.put("name", this.getName());
         return objectNodeCard;
+    }
+
+    public final boolean isTank() {
+        switch (this.getName()) {
+            case "Warden":
+            case "Goliath":
+                return true;
+
+            case "Sentinel":
+            case "Berserker":
+            case "Disciple":
+            case "Miraj":
+            case "The Cursed One":
+            case "The Ripper":
+                return false;
+
+            default:
+                return false;
+        }
     }
 
 
@@ -117,7 +140,7 @@ public class Card {
                 return new TheRipper(cardInput);
             default:
                 System.out.println("Unknown card type: " + cardInput.getName());
-                return null;  // Return null or a default card type
+                return null;
         }
     }
 

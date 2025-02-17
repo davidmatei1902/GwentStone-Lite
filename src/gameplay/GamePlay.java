@@ -225,6 +225,11 @@ public class GamePlay {
         eventHandler.handleAttack(attackerPos, attackedPos);
     }
 
+
+    public void cardUsesAbility(final Coordinates attackerPos, final Coordinates attackedPos) {
+        eventHandler.handleSpecialAttack(attackerPos, attackedPos);
+    }
+
     /**
      * Function prints player hand in output
      * @param player
@@ -298,10 +303,10 @@ public class GamePlay {
         eventHandler.getRound().setCurrentRoundNumber(eventHandler.getRound().getCurrentRoundNumber() + 1);
 
         if (!p1Deck.isEmpty()) {
-            playerOneHand.addCard(p1Deck.remove(0));
+            playerOneHand.addCard(p1Deck.removeFirst());
         }
         if (!p2Deck.isEmpty()) {
-            playerTwoHand.addCard(p2Deck.remove(0));
+            playerTwoHand.addCard(p2Deck.removeFirst());
         }
 
         int manaToAdd = Math.min(eventHandler.getRound().getCurrentRoundNumber(), eventHandler.getRound().getMaxRoundsNumber());
@@ -352,7 +357,12 @@ public class GamePlay {
                 case "cardUsesAttack":
                     Coordinates attackerPos = action.getCardAttacker();
                     Coordinates attackedPos = action.getCardAttacked();
-                    cardUsesAttack(attackerPos,attackedPos);
+                    cardUsesAttack(attackerPos, attackedPos);
+                    break;
+                case "cardUsesAbility":
+                    Coordinates attackerPosAbility = action.getCardAttacker();
+                    Coordinates attackedPosAbility = action.getCardAttacked();
+                    cardUsesAbility(attackerPosAbility, attackedPosAbility);
                     break;
                 case "endPlayerTurn":
                     handleEndTurn(p1Deck, p2Deck, playerOneHand, playerTwoHand);
